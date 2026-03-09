@@ -1,0 +1,96 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+}
+
+.container_offre_emploi {
+    width: 400px;
+    height: 500px;
+
+    background-color: #00000018;
+    padding: 30px 40px;
+    border-radius: 25px;
+
+    text-align: left;
+    font-size: 25px;
+}
+
+#liste_offre_emploi {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+    overflow-y: auto;
+    margin-right: -15px;
+
+    text-align: left;
+    font-size: 20px;
+    height: calc(100% - 20px);
+
+}
+
+.item_offre_emploi {
+    background-color: #f0f0f0;
+    margin-bottom: 8px;
+    margin-right: 15px;
+    padding: 8px 12px;
+    /*border-radius: 10px;*/
+    /*height: 45px;*/
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-bottom: 1px solid black;
+    
+}
+
+.item_offre_emploi:hover {
+    background-color: #e6e6e6;
+    cursor: pointer;
+
+    border: 1px solid black;
+}
+
+.item_offre_emploi_top {
+    margin: 0px 0px;
+    margin-bottom: 5px;
+
+    font-weight: 450;
+    font-size: 18px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item_offre_emploi_bottom {
+    margin: 0px 0px;
+
+    font-weight: 320;
+    font-size: 15px;
+}
+
+
+button {
+    font-family: inherit;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgb(37, 37, 37);
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+    font-weight: 400;
+    transition: all 100ms;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    background-color: rgba(0, 0, 0, 0.07);
+}
+
