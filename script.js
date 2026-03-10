@@ -1,22 +1,53 @@
 
-let btn;
-let list;
 let supabaseClient;
+
+let bouton_ajouter_offre_emploi;
+let liste_offre_emploi;
+let liste_mes_offres;
+let template_offre;
+
+let prenom_utilisateur;
+let nom_utilisateur;
+
+let id_utilisateur = 2;
+let bouton_changer_id_utilisateur;
 
 window.onload = () => {
     
-    btn = document.getElementById('addBtn');
-    list = document.getElementById('liste_offre_emploi');
-    let count = 1;
+    prenom_utilisateur = document.getElementById('prenom_utilisateur');
+    nom_utilisateur = document.getElementById('nom_utilisateur');
+    
+    bouton_ajouter_offre_emploi = document.getElementById('bouton_ajouter_offre');
+    liste_offre_emploi = document.getElementById('liste_offre_emploi');
+    liste_mes_offres = document.getElementById('liste_mes_offres');
+    template_offre = document.getElementById('template_offre');
 
-    btn.addEventListener('click', () => {
-        const li = document.createElement('li');
-        li.textContent = `Élément ${count}`;
-        li.classList.add("item_offre_emploi")
-        list.appendChild(li);
-        count++;
+    bouton_changer_id_utilisateur = document.getElementById('button_id_utilisateur');
+
+    bouton_ajouter_offre_emploi.addEventListener('click', async () => {
+        
+        const nom_offre = document.getElementById('input_nom_offre').value;
+        const nom_employeur = document.getElementById('input_nom_employeur').value;
+
+        const { data, error } = await supabaseClient
+            .from('offre_emploi')
+            .insert([{ nom: nom_offre, id_employeur: nom_employeur, id_createur: id_utilisateur }]);
+
+        if (error) {
+            console.error(error);
+        } else {
+            console.log("Offre ajoutée :", data);
+            get_mes_offres(); // afficher directement
+        }
     });
 
+    bouton_changer_id_utilisateur.addEventListener('click', async () => {
+        id_utilisateur = parseInt(document.getElementById('input_id_utilisateur').value);
+        get_all();
+    });
+
+    
+    
 
 
       // Récupère ton URL et ta clé publique (anon key) depuis Supabase Dashboard
@@ -27,44 +58,93 @@ window.onload = () => {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
-    get_offre_emploi();
+    get_all();
 
 };
 
+function get_all() {
+    get_nom_utilisateur();
+    get_offre_emploi();
+    get_mes_offres();
+}
 
+async function get_nom_utilisateur() {
+    const { data, error } = await supabaseClient
+    .from('utilisateur')
+    .select('*')
+    .eq('id_utilisateur', id_utilisateur);
+
+    refresh_nom_utilisateur(data[0].nom, data[0].prenom);
+}
+
+function refresh_nom_utilisateur(nom, prenom) {
+    prenom_utilisateur.textContent = `${prenom}`;
+    nom_utilisateur.textContent = `${nom}`;
+}
+
+async function get_mes_offres() {
+    const { data, error } = await supabaseClient
+    .from('offre_emploi')
+    .select('*,employeur!inner(nom) as nom_employeur')
+    .eq('id_createur', id_utilisateur);
+
+    refresh_liste_mes_offres(data);
+}
 
 async function get_offre_emploi() {
     const { data, error } = await supabaseClient
     .from('offre_emploi')
-    .select('*,employeur!inner(nom) as nom_employeur');
+    .select('*,employeur!inner(nom) as nom_employeur')
+    .neq('id_createur', id_utilisateur);
 
     //console.log(data);
     //console.log(error);
-    refresh_liste_offre_emploi(data)
+    refresh_liste_offre_emploi(data);
 }
 
 function refresh_liste_offre_emploi(data) {
+    liste_offre_emploi.textContent = '';
     data.forEach(offre_emploi => {
-        add_item_offre_emploi(offre_emploi.employeur.nom, offre_emploi.nom);
+        add_item_offre_emploi_to(liste_offre_emploi, offre_emploi.employeur.nom, offre_emploi.nom, offre_emploi.id_offre_emploi);
     });
 }
 
-function add_item_offre_emploi(entreprise = "", nom) {
+function refresh_liste_mes_offres(data) {
+    liste_mes_offres.textContent = '';
+    data.forEach(offre_emploi => {
+        add_item_offre_emploi_to(liste_mes_offres, offre_emploi.employeur.nom, offre_emploi.nom, offre_emploi.id_offre_emploi, true);
+    });
+}
 
-    const div = document.createElement('div');
-    div.classList.add('item_offre_emploi');
-    
-    const line1 = document.createElement('p');
-    line1.classList.add('item_offre_emploi_top');
-    line1.textContent = `${nom}`;
-    
-    const line2 = document.createElement('p');
-    line2.classList.add('item_offre_emploi_bottom');
-    line2.textContent = `${entreprise}`;
+function add_item_offre_emploi_to(liste, entreprise = "", nom, id_offre_emploi, son_offre = false) {
 
-    div.appendChild(line1);
-    div.appendChild(line2);
+    const clone_offre = template_offre.cloneNode(true);
+    clone_offre.id = '';
+    clone_offre.childNodes[1].childNodes[1].textContent = `${nom}`;
+    clone_offre.childNodes[1].childNodes[3].textContent = `${entreprise}`;
+    clone_offre.setAttribute("id_offre_emploi", id_offre_emploi);
 
-    list.appendChild(div);
+    if (son_offre) {
+        clone_offre.childNodes[3].classList.remove('hidden');
+        
+        clone_offre.childNodes[3].addEventListener('click', async () => {
+            delete_offre_emploi(id_offre_emploi);
+        });
+    }
 
+    liste.appendChild(clone_offre);
 };
+
+async function delete_offre_emploi(id_offre_emploi) {
+
+    const { error } = await supabaseClient
+    .from('offre_emploi')
+    .delete()
+    .eq('id_offre_emploi', id_offre_emploi);
+
+    get_mes_offres();
+}
+
+
+
+//🗑️
