@@ -1,22 +1,103 @@
 * {
     box-sizing: border-box;
+
+    --navbar_height: 80px;
 }
 
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f0f0f0;
+    background-color: #ececec;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 5px;
     padding-top: 50px;
+    user-select: none;
 }
 
 #page_container {
     width: 100%;
     max-width: 480px;
+    padding-bottom: calc(var(--navbar_height) + 20px);
 }
+
+#navbar {
+    position: fixed;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: var(--navbar_height);
+
+    border-radius: 30px 30px 0px 0px;
+
+    background-color: rgb(192, 192, 192);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.20);
+}
+
+.navbar_icon_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    aspect-ratio: 1;
+    height: 75%;
+
+    background-color: rgb(219, 219, 219);
+    border-radius: 30%;
+
+    transition: all 150ms;
+
+    cursor: pointer;
+
+    height: 80%;
+}
+
+.navbar_icon_container:active {       
+    height: 65%;
+}
+
+.navbar_icon_container.inactive {
+    background-color: transparent;
+    height: 75%;
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="home"] {
+    color: rgb(130, 173, 223);
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
+    color: rgb(219, 92, 135);
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
+    color: rgb(219, 92, 135);
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="book"] {
+    color: rgb(103, 190, 130);
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
+    color: rgb(219, 92, 135);
+}
+
+.navbar_icon {
+    color: rgb(143, 143, 143);
+
+    height: 60%;
+    width: 60%;
+}
+
+
+
 
 .container_page_principale {
     width: 100%;
@@ -24,8 +105,12 @@ body {
     height: 500px;
 
     background-color: #00000018;
-    padding: 30px 40px;
-    border-radius: 25px;
+    background-color: #ffffff;
+    /*border: 5px solid rgba(0, 0, 0, 0.158);*/
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+
+    padding: 20px 25px;
+    border-radius: 20px;
     margin-top: 30px;
 
     text-align: left;
@@ -46,6 +131,7 @@ body {
     border-radius: 45px;
 
     background-color: #ffffff;
+    background-color: #00000027;
 }
 
 #nom_utilisateur {
