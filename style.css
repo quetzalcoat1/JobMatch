@@ -1,7 +1,7 @@
 * {
     box-sizing: border-box;
 
-    --navbar_height: 80px;
+    --navbar_height: 70px;
 }
 
 
@@ -62,16 +62,16 @@ button, .navbar_icon_container {
 
     cursor: pointer;
 
-    height: 80%;
+    height: 70%;
 }
 
 .navbar_icon_container:active {       
-    height: 65%;
+    height: 60%;
 }
 
 .navbar_icon_container.inactive {
     background-color: transparent;
-    height: 75%;
+    height: 60%;
 }
 
 .navbar_icon_container:not(.inactive) > ion-icon[icon="home"] {
