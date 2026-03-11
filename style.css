@@ -1,25 +1,164 @@
+* {
+    box-sizing: border-box;
+
+    --navbar_height: 70px;
+}
+
+
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f0f0f0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px;
+    padding: 5px;
+    padding-top: 50px;
+    user-select: none;
 }
 
-.container_offre_emploi {
-    width: 400px;
+button, .navbar_icon_container {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+#page_container {
+    width: 100%;
+    max-width: 480px;
+    padding-bottom: calc(var(--navbar_height) + 20px);
+}
+
+#navbar {
+    position: fixed;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: var(--navbar_height);
+
+    border-radius: 30px 30px 0px 0px;
+
+    background-color: rgb(192, 192, 192);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+}
+
+.navbar_icon_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    aspect-ratio: 1;
+    height: 75%;
+
+    background-color: rgb(226, 226, 226);
+    border-radius: 30%;
+
+    transition: all 150ms;
+
+    cursor: pointer;
+
+    height: 70%;
+}
+
+.navbar_icon_container:active {       
+    height: 60%;
+}
+
+.navbar_icon_container.inactive {
+    background-color: transparent;
+    height: 60%;
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="home"] {
+    color: rgb(130, 173, 223);
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
+    color: rgb(219, 92, 135);
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
+    color: rgb(219, 92, 135);
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="book"] {
+    color: rgb(103, 190, 130);
+}
+
+.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
+    color: rgb(219, 92, 135);
+}
+
+.navbar_icon {
+    color: rgb(143, 143, 143);
+
+    height: 60%;
+    width: 60%;
+}
+
+
+
+
+.container_page_principale {
+    width: 100%;
+    max-width: 500px;
     height: 500px;
 
     background-color: #00000018;
-    padding: 30px 40px;
-    border-radius: 25px;
+    background-color: #ffffff;
+    /*border: 5px solid rgba(0, 0, 0, 0.158);*/
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+
+    padding: 20px 25px;
+    border-radius: 20px;
+    margin-top: 30px;
 
     text-align: left;
     font-size: 25px;
 }
 
-#liste_offre_emploi {
+.container_scroller {
+    display: flex;
+    flex-direction: column;
+}
+
+#container_infos_utilisateur {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    height: 130px;
+}
+
+#photo_profil {
+    width: 75px;
+    height: 75px;
+    border-radius: 45px;
+
+    background-color: #ffffff;
+    background-color: #00000027;
+}
+
+#nom_utilisateur {
+    font-size: 16px;
+}
+
+.titre_section {
+    text-align: left;
+    font-size: 25px;
+}
+
+#container_mes_offres {
+    height: 300px;
+}
+
+.liste_offre {
+    flex: 1;
     list-style-type: none;
     padding: 0;
     margin-top: 20px;
@@ -29,19 +168,30 @@ body {
     text-align: left;
     font-size: 20px;
     height: calc(100% - 20px);
+}
 
+#template_offre {
+    display: none;
 }
 
 .item_offre_emploi {
-    background-color: #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     margin-bottom: 8px;
     margin-right: 15px;
     padding: 8px 12px;
     /*border-radius: 10px;*/
     /*height: 45px;*/
+    background-color: #f0f0f0;
     border: 1px solid rgba(0, 0, 0, 0);
     border-bottom: 1px solid black;
     
+}
+
+.text_container_item_offre_emploi {
+    overflow: hidden;
 }
 
 .item_offre_emploi:hover {
@@ -70,19 +220,71 @@ body {
     font-size: 15px;
 }
 
+.item_offre_emploi_delete {
+    padding: 10px;
+    border-radius: 10px;
+
+    background-color: #cecece;
+}
+
+#container_input_ajouter_offre {
+    margin-top: 20px;
+    margin-bottom: 50px;
+
+    margin-left: 20px;
+    margin-right: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input {
+    all: unset;
+
+    padding: 9px 19px;
+    border-radius: 12px;
+    
+    font-size: 16px;
+
+    background-color: white;
+    border: 1px solid rgb(121, 121, 121);
+}
+
+#bouton_ajouter_offre {
+    width:fit-content;
+}
+
+
+
+#container_input_id_utilisateur {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+#input_id_utilisateur {
+    width: 100%;
+}
+
+
 
 button {
-    font-family: inherit;
     padding: 10px 20px;
-    margin-top: 15px;
-    border: none;
     border-radius: 12px;
+    border: none;
+
     background-color: rgba(0, 0, 0, 0.1);
     color: rgb(37, 37, 37);
+
     cursor: pointer;
+    
     font-size: 16px;
-    transition: background-color 0.2s;
     font-weight: 400;
+    font-family: inherit;
+
     transition: all 100ms;
 }
 
@@ -94,3 +296,6 @@ button:active {
     background-color: rgba(0, 0, 0, 0.07);
 }
 
+.hidden {
+    display: none;
+}
