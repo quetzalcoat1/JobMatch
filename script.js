@@ -12,6 +12,10 @@ let nom_utilisateur;
 let id_utilisateur = 2;
 let bouton_changer_id_utilisateur;
 
+let menu = 0;
+let menu_button_list;
+let menu_list = [];
+
 window.onload = () => {
     
     prenom_utilisateur = document.getElementById('prenom_utilisateur');
@@ -45,12 +49,32 @@ window.onload = () => {
         id_utilisateur = parseInt(document.getElementById('input_id_utilisateur').value);
         get_all();
     });
-
-    
     
 
+    // MENUS
+    menu_list_unsorted = Array.from(document.getElementsByClassName('menu'));
 
-      // Récupère ton URL et ta clé publique (anon key) depuis Supabase Dashboard
+    menu_list_unsorted.forEach(menu_object => {
+        menu_list[menu_object.getAttribute("menu_id")] = menu_object;
+    });
+
+    //class="menu" menu_id="0"
+
+    menu_button_list = document.getElementById('navbar').children;
+    for (let i = 0; i < menu_button_list.length; i++) {
+        button = menu_button_list[i];
+        let button_menu_id = button.getAttribute("menu_id");
+        button.addEventListener('click', async () => {
+            menu = button_menu_id;
+            display_menu(menu);
+        });
+    }
+
+    display_menu(4);
+    
+
+
+    // Récupère ton URL et ta clé publique (anon key) depuis Supabase Dashboard
     const SUPABASE_URL = "https://yxyzcmzjezaechwirlau.supabase.co";   // ton URL de projet
     const SUPABASE_ANON_KEY = "sb_publishable_mrOPsTPNmHR9jwqUcVrJ-Q_pq-y95sI";               // ta clé publique
 
@@ -61,6 +85,25 @@ window.onload = () => {
     get_all();
 
 };
+
+function display_menu(menu_id) {
+    
+    //console.log(menu_list);
+    for (let i = 0; i < menu_list.length; i++) {
+        if (menu_list[i] != null) {
+            menu_list[i].classList.add('hidden');
+        }
+        if (menu_button_list[i] != null) {
+            menu_button_list[i].classList.add('inactive');
+        }
+    }
+    if (menu_list[menu_id] != null) {
+        menu_list[menu_id].classList.remove('hidden');
+    }
+    if (menu_button_list[menu_id] != null) {
+        menu_button_list[menu_id].classList.remove('inactive');
+    }
+}
 
 function get_all() {
     get_nom_utilisateur();
