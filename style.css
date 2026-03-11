@@ -16,6 +16,11 @@ body {
     user-select: none;
 }
 
+button, .navbar_icon_container {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
 #page_container {
     width: 100%;
     max-width: 480px;
