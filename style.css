@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #ececec;
+    background-color: #f0f0f0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,7 +44,7 @@ button, .navbar_icon_container {
 
     background-color: rgb(192, 192, 192);
     background-color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.20);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
 }
 
 .navbar_icon_container {
@@ -55,7 +55,7 @@ button, .navbar_icon_container {
     aspect-ratio: 1;
     height: 75%;
 
-    background-color: rgb(219, 219, 219);
+    background-color: rgb(226, 226, 226);
     border-radius: 30%;
 
     transition: all 150ms;
@@ -112,7 +112,7 @@ button, .navbar_icon_container {
     background-color: #00000018;
     background-color: #ffffff;
     /*border: 5px solid rgba(0, 0, 0, 0.158);*/
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
 
     padding: 20px 25px;
     border-radius: 20px;
