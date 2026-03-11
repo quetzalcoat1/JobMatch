@@ -70,10 +70,8 @@ window.onload = () => {
         });
     }
 
-    display_menu(4);
+    display_menu(0);
     
-
-
     // Récupère ton URL et ta clé publique (anon key) depuis Supabase Dashboard
     const SUPABASE_URL = "https://yxyzcmzjezaechwirlau.supabase.co";   // ton URL de projet
     const SUPABASE_ANON_KEY = "sb_publishable_mrOPsTPNmHR9jwqUcVrJ-Q_pq-y95sI";               // ta clé publique
@@ -109,7 +107,52 @@ function get_all() {
     get_nom_utilisateur();
     get_offre_emploi();
     get_mes_offres();
+    get_photo_profil();
 }
+
+async function get_photo_profil() {
+
+    const { data, error } = await supabaseClient
+        .from('utilisateur')
+        .select('url_photo_profil')
+        .eq('id_utilisateur', id_utilisateur)
+        .single();
+    let local_photo_url = data.url_photo_profil;
+
+    if(local_photo_url) {
+        
+        const { data: publicData, error: publicError } = supabaseClient.storage
+        .from('photo_profil')
+        .getPublicUrl(local_photo_url);
+
+        let public_photo_url = publicData.publicUrl;
+        refresh_photo_profil(public_photo_url);
+    }
+    else {
+        refresh_photo_profil();
+    }
+}
+
+async function refresh_photo_profil(public_photo_url) {
+    if (public_photo_url) {
+        document.getElementById('photo_profil').src = public_photo_url;
+    }
+    else {
+        document.getElementById('photo_profil').src = "";
+    }
+}
+
+/*
+INPUT l image
+
+const { data, error } = await supabase
+.storage
+.from('photo_profil')
+.upload('professional-young-man-stockcake.webp', file); // file = File object depuis input */
+
+
+
+
 
 async function get_nom_utilisateur() {
     const { data, error } = await supabaseClient
