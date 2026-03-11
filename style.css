@@ -12,7 +12,7 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 5px;
-    padding-top: 50px;
+    /*padding-top: 50px;*/
     user-select: none;
 }
 
@@ -25,6 +25,14 @@ button, .navbar_icon_container {
     width: 100%;
     max-width: 480px;
     padding-bottom: calc(var(--navbar_height) + 20px);
+}
+
+#app_title {
+    margin: 0px;
+    margin-top: 30px;
+    padding-left: 20px;
+    font-size: 40px;
+    font-weight: 400;
 }
 
 #navbar {
@@ -66,7 +74,7 @@ button, .navbar_icon_container {
 }
 
 .navbar_icon_container:active {       
-    height: 60%;
+    /*height: 60%;*/
 }
 
 .navbar_icon_container.inactive {
@@ -122,6 +130,11 @@ button, .navbar_icon_container {
     font-size: 25px;
 }
 
+.container_scroller {
+    display: flex;
+    flex-direction: column;
+}
+
 #container_infos_utilisateur {
     display: flex;
     justify-content: space-between;
@@ -137,6 +150,7 @@ button, .navbar_icon_container {
 
     background-color: #ffffff;
     background-color: #00000027;
+    object-fit: cover;
 }
 
 #nom_utilisateur {
@@ -153,6 +167,7 @@ button, .navbar_icon_container {
 }
 
 .liste_offre {
+    flex: 1;
     list-style-type: none;
     padding: 0;
     margin-top: 20px;
