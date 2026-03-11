@@ -5,64 +5,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobMatch</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="text/javascript" src="script.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7/dist/ionicons/ionicons.js"></script>
 </head>
 
 <body>
 
     <div id="page_container">
 
-        <div id="container_input_id_utilisateur">
-            <input type="text" id="input_id_utilisateur" class="input" placeholder="rentrer quel utilisateur est connecté">
-            <button type="text" id="button_id_utilisateur" class="button">Valider</button>
-        </div>
 
-        <div id="container_infos_utilisateur" class="container_page_principale">
-            <div id="container_nom_utilisateur">
-                <div id="prenom_utilisateur" class="titre_section">Prenom</div>
-                <div id="nom_utilisateur">Nom</div>
-            </div>
+        <nav id="navbar">
+            <div class="navbar_icon_container" menu_id="0"><ion-icon name="home-outline"          icon="home" class="navbar_icon"></ion-icon></div>
+            <div class="navbar_icon_container" menu_id="1"><ion-icon name="help-outline"          icon="help" class="navbar_icon"></ion-icon></div>
+            <div class="navbar_icon_container" menu_id="2"><ion-icon name="heart-half-outline"    icon="heart" class="navbar_icon"></ion-icon></div>
+            <div class="navbar_icon_container" menu_id="3"><ion-icon name="bookmark-outline"      icon="book" class="navbar_icon"></ion-icon></div>
+            <div class="navbar_icon_container" menu_id="4"><ion-icon name="person-circle-outline" icon="person" class="navbar_icon"></ion-icon></div>
+        </nav>
 
-            <div id="photo_profil"></div>
-        </div>
 
-        <div id="hidden_templates">
-            <div class="item_offre_emploi" id="template_offre" id_offre_emploi="">
-                <div class="text_container_item_offre_emploi">
-                    <p class="item_offre_emploi_top"   >Nom offre</p>
-                    <p class="item_offre_emploi_bottom">Nom entreprise</p>
+
+        <div id="principal_menu" class="menu" menu_id="0">
+
+            <div id="hidden_templates">
+                <div class="item_offre_emploi" id="template_offre" id_offre_emploi="">
+                    <div class="text_container_item_offre_emploi">
+                        <p class="item_offre_emploi_top"   >Nom offre</p>
+                        <p class="item_offre_emploi_bottom">Nom entreprise</p>
+                    </div>
+                    <button class="item_offre_emploi_delete hidden">🗑️</button>
                 </div>
-                <button class="item_offre_emploi_delete hidden">🗑️</button>
             </div>
-        </div>
 
-        <div id="container_mes_offres" class="container_page_principale">
-            <div>Mes offres</div>
-            
-            <div id="liste_mes_offres" class="liste_offre">
+            <div id="container_mes_offres" class="container_page_principale">
+                <div>Mes offres</div>
+                
+                <div id="liste_mes_offres" class="liste_offre">
 
+                </div>
             </div>
-        </div>
 
-        <div id="container_input_ajouter_offre">
-            <input type="text" id="input_nom_offre" class="input" placeholder="Nom du poste">
-            <input type="text" id="input_nom_employeur" class="input" placeholder="Nom de l'employeur">
-            <button class="button" id="bouton_ajouter_offre">Ajouter l'offre d'emploi</button>
-        </div>
-
-        <div id="container_offre_emploi" class="container_page_principale">
-            <div>Offres d'emploi</div>
-            
-            <div id="liste_offre_emploi" class="liste_offre">
-
+            <div id="container_input_ajouter_offre">
+                <input type="text" id="input_nom_offre" class="input" placeholder="Nom du poste">
+                <input type="text" id="input_nom_employeur" class="input" placeholder="Nom de l'employeur">
+                <button class="button" id="bouton_ajouter_offre">Ajouter l'offre d'emploi</button>
             </div>
+
+            <div id="container_offre_emploi" class="container_page_principale">
+                <div>Offres d'emploi</div>
+                
+                <div id="liste_offre_emploi" class="liste_offre">
+
+                </div>
+            </div>
+
         </div>
+
+
+        <div id="profil_menu" class="menu" menu_id="1">
+        </div>
+
+        <div id="profil_menu" class="menu" menu_id="2">
+        </div>
+
+        <div id="profil_menu" class="menu" menu_id="3">
+
+            <div id="container_............." class="container_page_principale">
+                <div>Offres favorites</div>
+            </div>
+
+        </div>
+
+        <div id="profil_menu" class="menu" menu_id="4">
+
+            <div id="container_input_id_utilisateur">
+                <input type="text" id="input_id_utilisateur" class="input" placeholder="rentrer quel utilisateur est connecté">
+                <button type="text" id="button_id_utilisateur" class="button">Valider</button>
+            </div>
+
+            <div id="container_infos_utilisateur" class="container_page_principale">
+                <div id="container_nom_utilisateur">
+                    <div id="prenom_utilisateur" class="titre_section">Prenom</div>
+                    <div id="nom_utilisateur">Nom</div>
+                </div>
+
+                <div id="photo_profil"></div>
+            </div>
+
+            <div id="container_............." class="container_page_principale">
+                <div>Mon CV</div>
+            </div>
+
+        </div>
+
 
 
     </div>
+
 
 
 </body>
