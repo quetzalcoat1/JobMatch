@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-
+    margin: 0px;
     --navbar_height: 70px;
 }
 
@@ -66,7 +66,7 @@ button, .navbar_icon_container {
     background-color: rgb(226, 226, 226);
     border-radius: 30%;
 
-    transition: all 150ms;
+    transition: all 100ms;
 
     cursor: pointer;
 
@@ -236,7 +236,7 @@ button, .navbar_icon_container {
     background-color: #cecece;
 }
 
-#container_input_ajouter_offre {
+.container_formulaire {
     margin-top: 20px;
     margin-bottom: 50px;
 
@@ -251,10 +251,10 @@ button, .navbar_icon_container {
 .input {
     all: unset;
 
-    padding: 9px 19px;
-    border-radius: 12px;
+    padding: 18px 25px;
+    border-radius: 15px;
     
-    font-size: 16px;
+    font-size: 17px;
 
     background-color: white;
     border: 1px solid rgb(121, 121, 121);
@@ -278,7 +278,10 @@ button, .navbar_icon_container {
     width: 100%;
 }
 
-
+.big_text {
+    font-size: 30px;
+    font-weight: 500;
+}
 
 button {
     padding: 10px 20px;
@@ -307,4 +310,80 @@ button:active {
 
 .hidden {
     display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.cards {
+  display: flex;
+  gap: 0px;
+  margin: 30px 0;
+}
+
+.card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: white;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+    border: 2px solid transparent;
+}
+
+.left_card {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.right_card {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.card.selected {
+    border-color: #e62d6a;
+    background: #fce1e9;
+}
+
+#container_creation_compte {
+    height: auto;
+    transition: all 1000ms;
+}
+
+#bouton_creer_compte {
+    padding: 13px 25px;
+    border: none;
+    border-radius: 15px;
+    background: #e62d6a;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0ms;
+}
+
+#bouton_creer_compte:active {
+    background: #ee5588;
+}
+
+#bouton_creer_compte:disabled {
+    background: #aaa;
+    cursor: not-allowed;
 }
