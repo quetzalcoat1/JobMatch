@@ -21,7 +21,7 @@
 
 
         <nav id="navbar">
-            <div class="navbar_icon_container" menu_id="0"><ion-icon name="home-outline"          icon="home" class="navbar_icon"></ion-icon></div>
+            <div class="navbar_icon_container" menu_id="0"><ion-icon name="search-outline"          icon="home" class="navbar_icon"></ion-icon></div>
             <div class="navbar_icon_container" menu_id="1"><ion-icon name="help-outline"          icon="help" class="navbar_icon"></ion-icon></div>
             <div class="navbar_icon_container" menu_id="2"><ion-icon name="heart-half-outline"    icon="heart" class="navbar_icon"></ion-icon></div>
             <div class="navbar_icon_container" menu_id="3"><ion-icon name="bookmark-outline"      icon="book" class="navbar_icon"></ion-icon></div>
@@ -68,27 +68,50 @@
         </div>
 
 
+
         <div id="creation_compte_menu" class="menu" menu_id="1">
 
             <div id="container_creation_compte" class="container_formulaire">
-                <p class="big_text">Créez votre compte</p>
+                <div id="creation_compte_title" class="big_text">Créez votre compte</div>
 
                 <div class="cards">
                     <div class="card selected left_card" data-role="chercheur">Chercheur d'emploi</div>
                     <div class="card right_card" data-role="employeur">Recruteur</div>
                 </div>
 
-                <input type="text" id="input_prenom_utilisateur" class="input" placeholder="Prénom">
-                <input type="text" id="input_nom_utilisateur" class="input" placeholder="Nom">
-                <input type="email" id="input_email_utilisateur" class="input" placeholder="Email">
+                <p>Prénom</p>
+                <input type="text" id="input_prenom_utilisateur" class="input" placeholder="Laure">
+                <p>Nom</p>
+                <input type="text" id="input_nom_utilisateur" class="input" placeholder="Dupont">
+                <p>Email</p>
+                <input type="email" id="input_email_utilisateur" class="input" placeholder="laure.dupont@example.com">
+                <p id="label_input_entreprise" class="hidden">Entreprise</p>
                 <input type="text" id="input_entreprise" class="input hidden" placeholder="Nom de votre entreprise">
                 <button class="button" id="bouton_creer_compte">Créer mon compte</button>
+                <p id="already_have_account">Déjà un compte ? <a href="#">Connectez-vous</a></p>
             </div>
 
         </div>
 
+
+
         <div id="match_menu" class="menu" menu_id="2">
+            
+            <div id="container_offre_proposee" class="">
+                <div id="offre_proposee">
+                    <div>Ingénieur automatisation industrielle</div>
+                    <div id="offre_proposee_entreprise">Thalès</div>
+                    <div>Missions<br>Mission 1<br>Mission 2<br>Mission 3</div>
+                    <div id="offre_proposee_location"><ion-icon name="location-outline" id="offre_proposee_location_icon"></ion-icon> 21 Avenue du 1er Mai</div>
+                    <div id="offre_proposee_tranche_salariale">3400€ - 3700€</div>
+                    <div id="offre_proposee_date">il y a 3 jours</div>
+                </div>
+
+            </div>
+
+
         </div>
+
 
         <div id="save_menu" class="menu" menu_id="3">
 
@@ -97,6 +120,8 @@
             </div>
 
         </div>
+
+
 
         <div id="profil_menu" class="menu" menu_id="4">
 
@@ -116,7 +141,19 @@
             </div>
 
             <div id="container_............." class="container_page_principale">
+                <div>Description</div>
+            </div>
+
+            <div id="container_............." class="container_page_principale">
                 <div>Mon CV</div>
+            </div>
+
+            <div id="container_............." class="container_page_principale">
+                <div>Biographie</div>
+            </div>
+
+            <div id="container_............." class="container_page_principale">
+                <div>Expériences</div>
             </div>
 
         </div>
