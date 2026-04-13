@@ -11,7 +11,7 @@ let prenom_utilisateur;
 let nom_utilisateur;
 
 let id_utilisateur = 2;
-
+let id_offre_emploi_actuelle = null;
 
 //UI :
 
@@ -25,7 +25,8 @@ let bouton_ajouter_offre_emploi;
 let bouton_changer_id_utilisateur;
 
 //menus
-let current_menu_id = 0;
+let default_menu_id = 2;
+let current_menu_id = default_menu_id;
 let menu_button_list;
 let menu_list = [];
 
@@ -78,7 +79,7 @@ window.onload = () => {
         });
     }
 
-    display_menu(0);
+    display_menu(default_menu_id);
     
     // URL et clé publique (anon key) depuis Supabase Dashboard
     const SUPABASE_URL = "https://yxyzcmzjezaechwirlau.supabase.co";                // URL du projet
@@ -104,6 +105,7 @@ window.onload = () => {
     const cards = document.querySelectorAll('.card');
     const button = document.getElementById('bouton_creer_compte');
     const input_entreprise = document.getElementById('input_entreprise');
+    const label_input_entreprise = document.getElementById('label_input_entreprise');
     console.log(button);
 
     let selectedRole = null;
@@ -120,8 +122,10 @@ window.onload = () => {
         // show input entreprise if employeur
         if (selectedRole == 'employeur') {
             input_entreprise.classList.remove('hidden');
+            label_input_entreprise.classList.remove('hidden');
         } else {
             input_entreprise.classList.add('hidden');
+            label_input_entreprise.classList.add('hidden');
         }
         console.log("Rôle choisi :", selectedRole);
         // enable button
@@ -423,6 +427,11 @@ function add_item_offre_emploi_to(liste, entreprise = "", nom, id_offre_emploi, 
 
 //BUTTON HANDLERS
 
+function capitalize(text) {
+  if (!text) return "";
+  return text[0].toUpperCase() + text.slice(1).toLowerCase();
+}
+
 function handle_bouton_ajouter_offre_emploi () {
 
     const nom_offre = document.getElementById('input_nom_offre').value;
@@ -433,15 +442,16 @@ function handle_bouton_ajouter_offre_emploi () {
 
 async function handle_bouton_creer_compte() {
 
-    const prenom = document.getElementById('input_prenom_utilisateur').value;
-    const nom = document.getElementById('input_nom_utilisateur').value;
+    const prenom = capitalize(document.getElementById('input_prenom_utilisateur').value);
+    const nom = capitalize(document.getElementById('input_nom_utilisateur').value);
     const email = document.getElementById('input_email_utilisateur').value;
 
     const selectedCard = document.querySelector('.card.selected');
     const role = selectedCard ? selectedCard.dataset.role : null;
 
+    // vérifie que les champs sont remplis
     if (!prenom || !nom || !email || !role) {
-        console.log("Champs manquants");
+        console.log("Champ(s) manquant(s)");
         return;
     }
     if (role == "employeur") {
@@ -453,15 +463,9 @@ async function handle_bouton_creer_compte() {
     }
 
 
-/*
-    if (role == "employeur") {
-        //
-    else if (role == "chercheur") {
 
-    }
-*/
-
-    const { data, error } = await supabaseClient
+    // création ligne utilisateur
+    const { data: dataUser, error: errorUser } = await supabaseClient
         .from('utilisateur')
         .insert([
             {
@@ -473,16 +477,55 @@ async function handle_bouton_creer_compte() {
         ])
         .select();
 
-    if (error) {
-        console.error("Erreur création compte :", error);
+    if (errorUser) {
+        console.error("Erreur création compte utilisateur :", errorUser);
         return;
     }
 
-    console.log("Compte créé :", data);
+    console.log("Compte créé :", dataUser);
 
-    // optionnel : récupérer id utilisateur
-    console.log("ID du nouvel utilisateur :", data[0].id_utilisateur);
-    id_utilisateur = data[0].id_utilisateur;
+    //récupérer id utilisateur
+    console.log("ID du nouvel utilisateur :", dataUser[0].id_utilisateur);
+    id_utilisateur = dataUser[0].id_utilisateur;
+
+
+
+    // création ligne employeur ou chercheur d'emploi
+    if (role == "employeur") {
+        console.log("Créer compte employeur");
+        const { data, error } = await supabaseClient
+        .from('employeur')
+        .insert([
+            {
+                id_employeur: id_utilisateur,
+                //id_entreprise: entreprise, //lier nom entreprise et son id
+            }
+        ])
+        .select();
+        if (error) {
+            console.error("Erreur création compte employeur :", error);
+            return;
+        }
+        console.log(data);
+    }
+    else if (role == "chercheur") {
+        console.log("Créer compte chercheur d'emploi");
+        const { data, error } = await supabaseClient
+        .from('chercheur_emploi')
+        .insert([
+            {
+                id_chercheur_emploi: id_utilisateur,
+            }
+        ])
+        .select();
+        if (error) {
+            console.error("Erreur création compte chercheur d'emploi :", error);
+            return;
+        }
+        console.log(data);
+    }
+
+
 
     display_menu(0);
     get_all();
@@ -495,9 +538,42 @@ async function handle_bouton_creer_compte() {
 
 
 
+async function handle_aimer_offre(id_offre_emploi) {
+
+    const { data, error } = await supabaseClient
+    .from('chercheur_aime_offre')
+    .insert([
+        {
+            id_chercheur_emploi: id_utilisateur,
+            id_offre_emploi: id_offre_emploi,
+        }
+    ])
+    .select();
+    if (error) {
+        console.error("Erreur like d'une offre :", error);
+        return;
+    }
+}
 
 
 
 
+async function handle_aimer_chercheur(id_chercheur_emploi) {
 
+    //id_offre_emploi_actuelle est l'offre actuelle de l'employeur pour laquelle il cherche des candidats
+
+    const { data, error } = await supabaseClient
+    .from('chercheur_aime_offre')
+    .insert([
+        {
+            id_chercheur_emploi: id_chercheur_emploi,
+            id_offre_emploi: id_offre_emploi_actuelle,
+        }
+    ])
+    .select();
+    if (error) {
+        console.error("Erreur like d'une offre :", error);
+        return;
+    }
+}
 
