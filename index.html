@@ -42,6 +42,7 @@
                 </div>
             </div>
 
+            <p id="app_title">JobMatch ❤️</p>
             <div id="container_mes_offres" class="container_page_principale container_scroller">
                 <div>Mes offres</div>
                 
@@ -50,7 +51,7 @@
                 </div>
             </div>
 
-            <div id="container_input_ajouter_offre">
+            <div id="container_input_ajouter_offre" class="container_formulaire">
                 <input type="text" id="input_nom_offre" class="input" placeholder="Nom du poste">
                 <input type="text" id="input_nom_employeur" class="input" placeholder="Nom de l'employeur">
                 <button class="button" id="bouton_ajouter_offre">Ajouter l'offre d'emploi</button>
@@ -67,13 +68,29 @@
         </div>
 
 
-        <div id="profil_menu" class="menu" menu_id="1">
+        <div id="creation_compte_menu" class="menu" menu_id="1">
+
+            <div id="container_creation_compte" class="container_formulaire">
+                <p class="big_text">Créez votre compte</p>
+
+                <div class="cards">
+                    <div class="card selected left_card" data-role="chercheur">Chercheur d'emploi</div>
+                    <div class="card right_card" data-role="employeur">Recruteur</div>
+                </div>
+
+                <input type="text" id="input_prenom_utilisateur" class="input" placeholder="Prénom">
+                <input type="text" id="input_nom_utilisateur" class="input" placeholder="Nom">
+                <input type="email" id="input_email_utilisateur" class="input" placeholder="Email">
+                <input type="text" id="input_entreprise" class="input hidden" placeholder="Nom de votre entreprise">
+                <button class="button" id="bouton_creer_compte">Créer mon compte</button>
+            </div>
+
         </div>
 
-        <div id="profil_menu" class="menu" menu_id="2">
+        <div id="match_menu" class="menu" menu_id="2">
         </div>
 
-        <div id="profil_menu" class="menu" menu_id="3">
+        <div id="save_menu" class="menu" menu_id="3">
 
             <div id="container_............." class="container_page_principale container_scroller">
                 <div>Offres favorites</div>
@@ -94,7 +111,8 @@
                     <div id="nom_utilisateur">Nom</div>
                 </div>
 
-                <div id="photo_profil"></div>
+                <!--<div id="photo_profil"></div>-->
+                <img id="photo_profil" src="">
             </div>
 
             <div id="container_............." class="container_page_principale">
