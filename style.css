@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0px;
     --navbar_height: 70px;
+    --accent_color: #e62d6a;
 }
 
 
@@ -115,7 +116,6 @@ button, .navbar_icon_container {
 .container_page_principale {
     width: 100%;
     max-width: 500px;
-    height: 500px;
 
     background-color: #00000018;
     background-color: #ffffff;
@@ -127,12 +127,13 @@ button, .navbar_icon_container {
     margin-top: 30px;
 
     text-align: left;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .container_scroller {
     display: flex;
     flex-direction: column;
+    height: 500px;
 }
 
 #container_infos_utilisateur {
@@ -153,8 +154,12 @@ button, .navbar_icon_container {
     object-fit: cover;
 }
 
+#prenom_utilisateur {
+    font-size: 22px;
+}
+
 #nom_utilisateur {
-    font-size: 16px;
+    font-size: 22px;
 }
 
 .titre_section {
@@ -251,13 +256,13 @@ button, .navbar_icon_container {
 .input {
     all: unset;
 
-    padding: 18px 25px;
+    padding: 16px 25px;
     border-radius: 15px;
     
     font-size: 17px;
 
     background-color: white;
-    border: 1px solid rgb(121, 121, 121);
+    border: 2px solid rgba(121, 121, 121, 0.377);
 }
 
 #bouton_ajouter_offre {
@@ -317,22 +322,12 @@ button:active {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+/*creation compte*/
 
 .cards {
   display: flex;
   gap: 0px;
-  margin: 30px 0;
+  margin: 20px 0;
 }
 
 .card {
@@ -340,6 +335,8 @@ button:active {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+
     padding: 10px;
     background: white;
     cursor: pointer;
@@ -359,20 +356,15 @@ button:active {
 }
 
 .card.selected {
-    border-color: #e62d6a;
+    border-color: var(--accent_color);
     background: #fce1e9;
-}
-
-#container_creation_compte {
-    height: auto;
-    transition: all 1000ms;
 }
 
 #bouton_creer_compte {
     padding: 13px 25px;
     border: none;
     border-radius: 15px;
-    background: #e62d6a;
+    background: var(--accent_color);
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -386,4 +378,92 @@ button:active {
 #bouton_creer_compte:disabled {
     background: #aaa;
     cursor: not-allowed;
+}
+
+#container_creation_compte p {
+    font-size: 17px;
+    font-weight: 450;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: -5px;
+}
+
+#bouton_creer_compte {
+    margin-top: 20px;
+}
+
+#container_creation_compte a {
+    color: var(--accent_color);
+    text-decoration: none;
+}
+
+#container_creation_compte #already_have_account {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#creation_compte_title {
+    margin-top: 20px;
+}
+
+
+
+/*match*/
+
+#offre_proposee {
+    display: flex;
+    flex-direction: column;
+    height: 30%;
+    height: auto;
+    gap: 10px;
+
+    background-color: #00000018;
+    background-color: #ffffff;
+    /*border: 5px solid rgba(0, 0, 0, 0.158);*/
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+
+    padding: 20px 25px;
+    border-radius: 20px;
+
+    text-align: left;
+    font-size: 20px;
+}
+
+#container_offre_proposee {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    
+    width: 100%;
+    height: 80vh;
+}
+
+#offre_proposee_tranche_salariale {
+    width: fit-content;
+    background-color: #0000002c;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 450;
+}
+
+#offre_proposee_date {
+    font-size: 15px;
+    color: #696969;
+    font-weight: 450;
+}
+
+#offre_proposee_entreprise {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+#offre_proposee_location_icon {
+    width: 20px;
+    transform: translateY(2px);
+}
+
+#offre_proposee_location {
+    font-size: 18px;
 }
