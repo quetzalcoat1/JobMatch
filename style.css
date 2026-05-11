@@ -1,469 +1,303 @@
+/* BASE */
 * {
     box-sizing: border-box;
     margin: 0px;
-    --navbar_height: 70px;
-    --accent_color: #e62d6a;
+    padding: 0px;
 }
 
-
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 5px;
-    /*padding-top: 50px;*/
+    position: fixed;
+    width: 100%;
+    height: 100%;
     user-select: none;
 }
 
-button, .navbar_icon_container {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-}
-
-#page_container {
-    width: 100%;
-    max-width: 480px;
-    padding-bottom: calc(var(--navbar_height) + 20px);
-}
-
-#app_title {
-    margin: 0px;
-    margin-top: 30px;
-    padding-left: 20px;
-    font-size: 40px;
-    font-weight: 400;
-}
-
-#navbar {
-    position: fixed;
+.corps {
+    background-color: #f3f4f6;
+    height: 100vh;
+    font-family: sans-serif;
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 480px;
-    height: var(--navbar_height);
-
-    border-radius: 30px 30px 0px 0px;
-
-    background-color: rgb(192, 192, 192);
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
-}
-
-.navbar_icon_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    aspect-ratio: 1;
-    height: 75%;
-
-    background-color: rgb(226, 226, 226);
-    border-radius: 30%;
-
-    transition: all 100ms;
-
-    cursor: pointer;
-
-    height: 70%;
-}
-
-.navbar_icon_container:active {       
-    /*height: 60%;*/
-}
-
-.navbar_icon_container.inactive {
-    background-color: transparent;
-    height: 60%;
-}
-
-.navbar_icon_container:not(.inactive) > ion-icon[icon="home"] {
-    color: rgb(130, 173, 223);
-}
-
-.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
-    color: rgb(219, 92, 135);
-}
-
-.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
-    color: rgb(219, 92, 135);
-}
-
-.navbar_icon_container:not(.inactive) > ion-icon[icon="book"] {
-    color: rgb(103, 190, 130);
-}
-
-.navbar_icon_container:not(.inactive) > ion-icon[icon="heart"] {
-    color: rgb(219, 92, 135);
-}
-
-.navbar_icon {
-    color: rgb(143, 143, 143);
-
-    height: 60%;
-    width: 60%;
-}
-
-
-
-
-.container_page_principale {
-    width: 100%;
-    max-width: 500px;
-
-    background-color: #00000018;
-    background-color: #ffffff;
-    /*border: 5px solid rgba(0, 0, 0, 0.158);*/
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
-
-    padding: 20px 25px;
-    border-radius: 20px;
-    margin-top: 30px;
-
-    text-align: left;
-    font-size: 20px;
-}
-
-.container_scroller {
-    display: flex;
+    overflow-x: hidden;
     flex-direction: column;
-    height: 500px;
-}
-
-#container_infos_utilisateur {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    height: 130px;
-}
-
-#photo_profil {
-    width: 75px;
-    height: 75px;
-    border-radius: 45px;
-
-    background-color: #ffffff;
-    background-color: #00000027;
-    object-fit: cover;
-}
-
-#prenom_utilisateur {
-    font-size: 22px;
-}
-
-#nom_utilisateur {
-    font-size: 22px;
-}
-
-.titre_section {
-    text-align: left;
-    font-size: 25px;
-}
-
-#container_mes_offres {
-    height: 300px;
-}
-
-.liste_offre {
-    flex: 1;
-    list-style-type: none;
-    padding: 0;
-    margin-top: 20px;
-    overflow-y: auto;
-    margin-right: -15px;
-
-    text-align: left;
-    font-size: 20px;
-    height: calc(100% - 20px);
-}
-
-#template_offre {
-    display: none;
-}
-
-.item_offre_emploi {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 8px;
-    margin-right: 15px;
-    padding: 8px 12px;
-    /*border-radius: 10px;*/
-    /*height: 45px;*/
-    background-color: #f0f0f0;
-    border: 1px solid rgba(0, 0, 0, 0);
-    border-bottom: 1px solid black;
-    
-}
-
-.text_container_item_offre_emploi {
-    overflow: hidden;
-}
-
-.item_offre_emploi:hover {
-    background-color: #e6e6e6;
-    cursor: pointer;
-
-    border: 1px solid black;
-}
-
-.item_offre_emploi_top {
-    margin: 0px 0px;
-    margin-bottom: 5px;
-
-    font-weight: 450;
-    font-size: 18px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.item_offre_emploi_bottom {
-    margin: 0px 0px;
-
-    font-weight: 320;
-    font-size: 15px;
-}
-
-.item_offre_emploi_delete {
-    padding: 10px;
-    border-radius: 10px;
-
-    background-color: #cecece;
-}
-
-.container_formulaire {
-    margin-top: 20px;
-    margin-bottom: 50px;
-
-    margin-left: 20px;
-    margin-right: 20px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.input {
-    all: unset;
-
-    padding: 16px 25px;
-    border-radius: 15px;
-    
-    font-size: 17px;
-
-    background-color: white;
-    border: 2px solid rgba(121, 121, 121, 0.377);
-}
-
-#bouton_ajouter_offre {
-    width:fit-content;
-}
-
-
-
-#container_input_id_utilisateur {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    margin-bottom: 50px;
-}
-
-#input_id_utilisateur {
-    width: 100%;
-}
-
-.big_text {
-    font-size: 30px;
-    font-weight: 500;
 }
 
 button {
-    padding: 10px 20px;
-    border-radius: 12px;
-    border: none;
-
-    background-color: rgba(0, 0, 0, 0.1);
-    color: rgb(37, 37, 37);
-
+    all: unset;
     cursor: pointer;
-    
-    font-size: 16px;
-    font-weight: 400;
-    font-family: inherit;
-
-    transition: all 100ms;
 }
 
-button:hover {
-    background-color: rgba(0, 0, 0, 0.15);
-}
-
-button:active {
-    background-color: rgba(0, 0, 0, 0.07);
-}
-
-.hidden {
-    display: none;
-}
-
-
-
-
-
-
-/*creation compte*/
-
-.cards {
-  display: flex;
-  gap: 0px;
-  margin: 20px 0;
-}
-
-.card {
+.contenu {
     flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    padding-bottom: 100px;
+}
+
+/* PAGE */
+.page { display: none; }
+.page.active { display: block; }
+
+/* TITRE */
+.titre-logo {
+    font-size: 24px;
+    font-weight: 900;
+    color: #2563eb;
+}
+
+/* CARTE */
+.carte {
+    background: white;
+    border-radius: 25px;
+    /*margin-top: 32px;*/
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.carte-image {
+    pointer-events: none;
+    height: 180px;
+    background: linear-gradient(to bottom right, #60a5fa, #4f46e5);
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-
-    padding: 10px;
-    background: white;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: 500;
-    border: 2px solid transparent;
+    font-size: 60px;
+    color: rgba(255,255,255,0.5);
 }
 
-.left_card {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
+.carte-infos {
+    pointer-events: none;
+    padding: 20px;
 }
 
-.right_card {
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
+.titre-carte {
+    pointer-events: none;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-.card.selected {
-    border-color: var(--accent_color);
-    background: #fce1e9;
+.entreprise {
+    color: #2563eb;
+    font-weight: bold;
+    margin-bottom: 16px;
 }
 
-#bouton_creer_compte {
-    padding: 13px 25px;
-    border: none;
-    border-radius: 15px;
-    background: var(--accent_color);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0ms;
+.info {
+    font-size: 14px;
+    color: #48515e;
+    margin-bottom: 3px;
 }
 
-#bouton_creer_compte:active {
-    background: #ee5588;
+#carte_offre {
+    position: absolute;
+    user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    touch-action: none;
+    will-change: transform;
 }
 
-#bouton_creer_compte:disabled {
-    background: #aaa;
-    cursor: not-allowed;
-}
-
-#container_creation_compte p {
-    font-size: 17px;
-    font-weight: 450;
-    margin-left: 5px;
-    margin-top: 5px;
-    margin-bottom: -5px;
-}
-
-#bouton_creer_compte {
-    margin-top: 20px;
-}
-
-#container_creation_compte a {
-    color: var(--accent_color);
-    text-decoration: none;
-}
-
-#container_creation_compte #already_have_account {
-    margin-top: 20px;
-    text-align: center;
-}
-
-#creation_compte_title {
-    margin-top: 20px;
-}
-
-
-
-/*match*/
-
-#offre_proposee {
+#p-decouvrir.active {
     display: flex;
     flex-direction: column;
-    height: 30%;
-    height: auto;
-    gap: 10px;
-
-    background-color: #00000018;
-    background-color: #ffffff;
-    /*border: 5px solid rgba(0, 0, 0, 0.158);*/
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
-
-    padding: 20px 25px;
-    border-radius: 20px;
-
-    text-align: left;
-    font-size: 20px;
+    align-items: center;
 }
 
-#container_offre_proposee {
+/* ACTIONS */
+.actions {
     display: flex;
     justify-content: center;
+    gap: 32px;
+    margin-top: 32px;
+    margin-top: 500px;
+}
+
+.bouton-carte {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    
+    justify-content: center;
+    font-size: 24px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.bouton-rouge {
+    background: white;
+    color: #ef4444;
+    border: 1px solid #fee2e2;
+    box-shadow: 0 0px 30px rgba(0,0,0,0.1);
+}
+
+.bouton-bleu {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 0px 30px rgba(0,0,0,0.1);
+}
+
+/* NAV */
+.barre-nav {
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    height: 80vh;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
 }
 
-#offre_proposee_tranche_salariale {
-    width: fit-content;
-    background-color: #0000002c;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: 450;
+.onglet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #9ca3af;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 10px;
+    text-transform: uppercase;
 }
 
-#offre_proposee_date {
-    font-size: 15px;
-    color: #696969;
-    font-weight: 450;
+.onglet.actif {
+    color: #2563eb;
+    font-weight: bold;
 }
 
-#offre_proposee_entreprise {
+.nav-icon {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+
+
+.entete-page {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.titre-page {
     font-size: 20px;
-    font-weight: 700;
+    font-weight: bold;
 }
 
-#offre_proposee_location_icon {
-    width: 20px;
-    transform: translateY(2px);
+.bouton-creation {
+    background: #2563eb;
+    color: white;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-#offre_proposee_location {
-    font-size: 18px;
+.carte-offre {
+    padding: 19px 16px;
+    cursor: pointer;
+}
+
+.titre-offre {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.sous-texte-offre {
+    color: #2563eb;
+    font-size: 12px;
+}
+
+.carte-conversation {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    background: #e5e7eb;
+    border-radius: 50%;
+}
+
+.infos-conversation {
+    flex: 1;
+}
+
+.nom-entreprise {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.dernier-message {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.entete-profil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.avatar-grand {
+    width: 84px;
+    height: 84px;
+    background: #d1d5db;
+    border-radius: 50%;
+    margin-bottom: 8px;
+}
+
+.nom-profil {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.titre-section {
+    font-size: 12px;
+    font-weight: bold;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.ligne-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.carte-profil {
+    padding: 19px 16px;
+}
+
+.bouton-retour {
+    color: #9ca3af;
+    margin-bottom: 16px;
+}
+
+.champ-formulaire {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.bouton-principal {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
 }
