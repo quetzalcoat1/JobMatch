@@ -1,168 +1,132 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobMatch</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="script.js"></script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 
-    <script type="module" src="https://unpkg.com/ionicons@7/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js" defer></script>
 </head>
 
-<body>
 
-    <div id="page_container">
+<body class="corps">
 
+    <main class="contenu">
 
-        <nav id="navbar">
-            <div class="navbar_icon_container" menu_id="0"><ion-icon name="search-outline"          icon="home" class="navbar_icon"></ion-icon></div>
-            <div class="navbar_icon_container" menu_id="1"><ion-icon name="help-outline"          icon="help" class="navbar_icon"></ion-icon></div>
-            <div class="navbar_icon_container" menu_id="2"><ion-icon name="heart-half-outline"    icon="heart" class="navbar_icon"></ion-icon></div>
-            <div class="navbar_icon_container" menu_id="3"><ion-icon name="bookmark-outline"      icon="book" class="navbar_icon"></ion-icon></div>
-            <div class="navbar_icon_container" menu_id="4"><ion-icon name="person-circle-outline" icon="person" class="navbar_icon"></ion-icon></div>
-        </nav>
+        <section id="p-decouvrir" class="page active">
+            <h1 class="titre-logo">JobMatch</h1>
 
+            <div class="carte" id="carte_offre">
+                <div class="carte-image">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
 
-
-        <div id="principal_menu" class="menu" menu_id="0">
-
-            <div id="hidden_templates">
-                <div class="item_offre_emploi" id="template_offre" id_offre_emploi="">
-                    <div class="text_container_item_offre_emploi">
-                        <p class="item_offre_emploi_top"   >Nom offre</p>
-                        <p class="item_offre_emploi_bottom">Nom entreprise</p>
-                    </div>
-                    <button class="item_offre_emploi_delete hidden">🗑️</button>
+                <div class="carte-infos">
+                    <h2 class="titre-carte">Développeur Front-End</h2>
+                    <p class="entreprise">TechVision Corp.</p>
+                    <p class="info"><strong>Lieu :</strong> Paris</p>
+                    <p class="info"><strong>Salaire :</strong> 45k€</p>
                 </div>
             </div>
 
-            <p id="app_title">JobMatch ❤️</p>
-            <div id="container_mes_offres" class="container_page_principale container_scroller">
-                <div>Mes offres</div>
-                
-                <div id="liste_mes_offres" class="liste_offre">
+            <div class="actions">
+                <button class="bouton-carte bouton-rouge">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <button class="bouton-carte bouton-bleu">
+                    <i class="fa-solid fa-check"></i>
+                </button>
+            </div>
+        </section>
 
+
+        <section id="p-offres" class="page">
+            <div class="entete-page">
+                <h1 class="titre-page">Mes Offres</h1>
+                <button onclick="allerA('p-formulaire')" class="bouton bouton-creation">
+                    + Créer
+                </button>
+            </div>
+
+            <div class="carte carte-offre" onclick="allerA('p-matchs')">
+                <h3 class="titre-offre">Designer UX/UI</h3>
+                <p class="sous-texte-offre">12 matchs en cours</p>
+            </div>
+        </section>
+
+
+        <section id="p-matchs" class="page">
+            <div class="entete-page">
+                <h1 class="titre-page">Conversations</h1>
+            </div>
+
+            <div class="carte carte-conversation">
+                <div class="avatar"></div>
+                <div class="infos-conversation">
+                    <h4 class="nom-entreprise">TechVision Corp.</h4>
+                    <p class="dernier-message">C'est un match ! Discutons...</p>
                 </div>
             </div>
+        </section>
 
-            <div id="container_input_ajouter_offre" class="container_formulaire">
-                <input type="text" id="input_nom_offre" class="input" placeholder="Nom du poste">
-                <input type="text" id="input_nom_employeur" class="input" placeholder="Nom de l'employeur">
-                <button class="button" id="bouton_ajouter_offre">Ajouter l'offre d'emploi</button>
+
+        <section id="p-profil" class="page">
+            <div class="entete-profil">
+                <div class="avatar-grand"></div>
+                <h2 class="nom-profil">Jean Dupont</h2>
             </div>
 
-            <div id="container_offre_emploi" class="container_page_principale container_scroller">
-                <div>Offres d'emploi</div>
-                
-                <div id="liste_offre_emploi" class="liste_offre">
-
-                </div>
+            <div class="carte carte-profil">
+                <p class="titre-section">Mes critères</p>
+                <label class="ligne-checkbox">
+                    <input type="checkbox" checked>
+                    CDI uniquement
+                </label>
             </div>
-
-        </div>
-
+        </section>
 
 
-        <div id="creation_compte_menu" class="menu" menu_id="1">
+        <section id="p-formulaire" class="page">
+            <button onclick="allerA('p-offres')" class="bouton-retour">
+                <i class="fa-solid fa-arrow-left"></i> Retour
+            </button>
 
-            <div id="container_creation_compte" class="container_formulaire">
-                <div id="creation_compte_title" class="big_text">Créez votre compte</div>
+            <h1 class="titre-page">Nouvelle Offre</h1>
+            <input type="text" placeholder="Titre du poste" class="champ-formulaire">
+            <textarea placeholder="Missions..." rows="4" class="champ-formulaire"></textarea>
 
-                <div class="cards">
-                    <div class="card selected left_card" data-role="chercheur">Chercheur d'emploi</div>
-                    <div class="card right_card" data-role="employeur">Recruteur</div>
-                </div>
+            <button onclick="allerA('p-offres')" class="bouton bouton-principal">
+                Publier
+            </button>
+        </section>
 
-                <p>Prénom</p>
-                <input type="text" id="input_prenom_utilisateur" class="input" placeholder="Laure">
-                <p>Nom</p>
-                <input type="text" id="input_nom_utilisateur" class="input" placeholder="Dupont">
-                <p>Email</p>
-                <input type="email" id="input_email_utilisateur" class="input" placeholder="laure.dupont@example.com">
-                <p id="label_input_entreprise" class="hidden">Entreprise</p>
-                <input type="text" id="input_entreprise" class="input hidden" placeholder="Nom de votre entreprise">
-                <button class="button" id="bouton_creer_compte">Créer mon compte</button>
-                <p id="already_have_account">Déjà un compte ? <a href="#">Connectez-vous</a></p>
-            </div>
-
-        </div>
+    </main>
 
 
+    <nav class="barre-nav">
+        <button onclick="allerA('p-decouvrir')" class="onglet actif" id="n-decouvrir">
+            <i class="fa-solid fa-clone nav-icon"></i>
+            <span>Découvrir</span>
+        </button>
 
-        <div id="match_menu" class="menu" menu_id="2">
-            
-            <div id="container_offre_proposee" class="">
-                <div id="offre_proposee">
-                    <div>Ingénieur automatisation industrielle</div>
-                    <div id="offre_proposee_entreprise">Thalès</div>
-                    <div>Missions<br>Mission 1<br>Mission 2<br>Mission 3</div>
-                    <div id="offre_proposee_location"><ion-icon name="location-outline" id="offre_proposee_location_icon"></ion-icon> 21 Avenue du 1er Mai</div>
-                    <div id="offre_proposee_tranche_salariale">3400€ - 3700€</div>
-                    <div id="offre_proposee_date">il y a 3 jours</div>
-                </div>
+        <button onclick="allerA('p-offres')" class="onglet" id="n-offres">
+            <i class="fa-solid fa-briefcase nav-icon"></i>
+            <span>Offres</span>
+        </button>
 
-            </div>
+        <button onclick="allerA('p-matchs')" class="onglet" id="n-matchs">
+            <i class="fa-solid fa-comments nav-icon"></i>
+            <span>Matchs</span>
+        </button>
 
-
-        </div>
-
-
-        <div id="save_menu" class="menu" menu_id="3">
-
-            <div id="container_............." class="container_page_principale container_scroller">
-                <div>Offres favorites</div>
-            </div>
-
-        </div>
-
-
-
-        <div id="profil_menu" class="menu" menu_id="4">
-
-            <div id="container_input_id_utilisateur">
-                <input type="text" id="input_id_utilisateur" class="input" placeholder="rentrer quel utilisateur est connecté">
-                <button type="text" id="button_id_utilisateur" class="button">Valider</button>
-            </div>
-
-            <div id="container_infos_utilisateur" class="container_page_principale">
-                <div id="container_nom_utilisateur">
-                    <div id="prenom_utilisateur" class="titre_section">Prenom</div>
-                    <div id="nom_utilisateur">Nom</div>
-                </div>
-
-                <!--<div id="photo_profil"></div>-->
-                <img id="photo_profil" src="">
-            </div>
-
-            <div id="container_............." class="container_page_principale">
-                <div>Description</div>
-            </div>
-
-            <div id="container_............." class="container_page_principale">
-                <div>Mon CV</div>
-            </div>
-
-            <div id="container_............." class="container_page_principale">
-                <div>Biographie</div>
-            </div>
-
-            <div id="container_............." class="container_page_principale">
-                <div>Expériences</div>
-            </div>
-
-        </div>
-
-
-
-    </div>
-
-
+        <button onclick="allerA('p-profil')" class="onglet" id="n-profil">
+            <i class="fa-solid fa-user nav-icon"></i>
+            <span>Profil</span>
+        </button>
+    </nav>
 
 </body>
-</html>
