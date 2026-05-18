@@ -19,7 +19,7 @@
 
 
 // - Données utilisateur -
-let id_utilisateur = 2;
+let id_utilisateur = 1;
 
 const TYPE_UTILISATEUR = {
   EMPLOYEUR: "employeur",
@@ -30,11 +30,13 @@ let type_utilisateur = null;
 
 
 // - User interface -
+let id_offre_proposee_swipe = null;
+let id_chercheur_propose_swipe = null;
 let id_offre_emploi_actuelle = null;
 
 //Données
-let ui_prenom_utilisateur;
-let ui_nom_utilisateur;
+//let ui_prenom_utilisateur;
+//let ui_nom_utilisateur;
 
 //listes
 let ui_liste_offre_emploi;
@@ -46,7 +48,7 @@ let ui_bouton_ajouter_offre_emploi;
 let ui_bouton_changer_id_utilisateur;
 
 //menus
-let default_menu_id = 2;
+let default_menu_id = 1;
 let current_menu_id = default_menu_id;
 let ui_menu_button_list;
 let menu_list = [];
@@ -57,6 +59,11 @@ let menu_list = [];
 let supabaseClient;
 let match_list = [];
 let refresh_delay = 2000; //2 seconds
+
+
+
+// - Notification -
+let notification_default_duration = 2000; //ms
 
 
 
@@ -112,12 +119,12 @@ let resetCardAfterSwipeDuration = 250; // ms
 window.onload = () => {
     db_initialisation();
 
-    //ui_assignation();
-    //ui_event_listeners();
+    ui_assignation();
+    ui_event_listeners();
     //ui_initialisation();
     ui_swipe_initialisation();
 
-    //start();
+    start();
 };
 
 function db_initialisation() {
@@ -130,25 +137,25 @@ function db_initialisation() {
 }
 
 function ui_assignation() {
-    ui_prenom_utilisateur = document.getElementById('prenom_utilisateur');
-    ui_nom_utilisateur = document.getElementById('nom_utilisateur');
+    //ui_prenom_utilisateur = document.getElementById('prenom_utilisateur');
+    //ui_nom_utilisateur = document.getElementById('nom_utilisateur');
 
-    ui_liste_offre_emploi = document.getElementById('liste_offre_emploi');
-    ui_liste_mes_offres = document.getElementById('liste_mes_offres');
-    ui_template_offre = document.getElementById('template_offre');
+    //ui_liste_offre_emploi = document.getElementById('liste_offre_emploi');
+    ui_liste_mes_offres = document.getElementById('liste-mes-offres');
+    ui_template_offre = document.getElementById('template-offre');
 
-    ui_bouton_ajouter_offre_emploi = document.getElementById('bouton_ajouter_offre');
-    ui_bouton_changer_id_utilisateur = document.getElementById('button_id_utilisateur');
+    ui_bouton_ajouter_offre = document.getElementById('bouton-ajouter-offre');
+    //ui_bouton_changer_id_utilisateur = document.getElementById('button_id_utilisateur');
 
-    ui_menu_button_list = document.getElementById('navbar').children;
+    //ui_menu_button_list = document.getElementById('navbar').children;
 }
 
 function ui_event_listeners() {
-    ui_bouton_ajouter_offre_emploi.addEventListener('click', async () => handle_bouton_ajouter_offre_emploi());
-    ui_bouton_changer_id_utilisateur.addEventListener('click', async () => {
-        id_utilisateur = parseInt(document.getElementById('input_id_utilisateur').value);
-        get_all_database();
-    });
+    ui_bouton_ajouter_offre.addEventListener('click', async () => handle_bouton_ajouter_offre());
+    //ui_bouton_changer_id_utilisateur.addEventListener('click', async () => {
+    //    id_utilisateur = parseInt(document.getElementById('input_id_utilisateur').value);
+    //    get_all_database();
+    //});
 }
 
 function ui_menu_initialisation() {
@@ -171,7 +178,7 @@ function ui_menu_initialisation() {
 }
 
 function ui_swipe_initialisation() {
-    card_rect = document.getElementById("carte_offre");
+    card_rect = document.getElementById("carte-offre");
     const rectPos = card_rect.getBoundingClientRect();
 
     originX = rectPos.left;
@@ -187,17 +194,23 @@ function ui_swipe_initialisation() {
 }
 
 async function start() {
-    display_menu(default_menu_id);
+    //display_menu(default_menu_id);
+    allerA('p-decouvrir');
 
     get_all_database();
+    manage_match_notifications(init=true);
     start_refresh_timer();
 
     if (type_utilisateur === TYPE_UTILISATEUR.CHERCHEUR) {
-        match_list = await get_match_from_chercheur_emploi();
+        //match_list = await get_match_from_chercheur_emploi();
     }
     else if (type_utilisateur === TYPE_UTILISATEUR.EMPLOYEUR) {
-        match_list = await get_match_from_offre_emploi();
+        //match_list = await get_match_from_offre_emploi();
     }
+
+    id_offre_proposee_swipe = 3; //TODO : récupérer une offre dans la database
+    id_chercheur_propose_swipe = 1; //TODO : récupérer un chercheur dans la database
+    id_offre_emploi_actuelle = 3; //TODO : sauvegarder l'offre actuelle de l'employeur
 }
 
 
@@ -221,9 +234,9 @@ async function start() {
 
 function get_all_database() {
     get_nom_utilisateur();
-    get_offre_emploi();
-    get_mes_offres();
     get_photo_profil();
+    //get_offre_emploi();
+    get_mes_offres();
 }
 
 function start_refresh_timer() {
@@ -238,21 +251,26 @@ function refresh_timer() {
 }
 
 async function refresh() {
-    get_offre_emploi();
+    //get_offre_emploi();
+    console.log("Rafraîchissement des données :");
+
     await manage_match_notifications();
-    
-    console.log("Rafraîchissement des données");
 }
 
-async function manage_match_notifications() {
+async function manage_match_notifications(init=false) {
 
     let new_match_list = await get_match_from_chercheur_emploi();
 
     const set_match_list = new Set(match_list.map(makeKey))
     const new_matches = new_match_list.filter(x => !set_match_list.has(makeKey(x)))
 
+    if (init) {
+        console.log("Initialisation des matchs :", new_match_list);
+    }
     if (new_matches.length > 0) {
-        match_notification(new_matches)
+        if (!init) {
+            match_notification(new_matches)
+        }
         match_list = new_match_list;
     }
 }
@@ -263,6 +281,10 @@ function makeKey(x) {
 
 function match_notification(new_matches) {
     console.log("Nouveau match trouvé :", new_matches);
+
+    //new_matches[0].
+
+    afficher_notification("Vous avez un nouveau match !");
 }
 
 
@@ -344,6 +366,146 @@ function allerA(idPage) {
 // ----------------------------
 
 
+async function get_nom_utilisateur() {
+    const { data, error } = await supabaseClient
+    .from('utilisateur')
+    .select('*')
+    .eq('id_utilisateur', id_utilisateur);
+
+    if (data == null || error) {
+        throw new Error("Impossible de récupérer le nom de l'utilisateur");
+    }
+
+    if (data[0].type == "employeur") {
+        type_utilisateur = TYPE_UTILISATEUR.EMPLOYEUR;
+    } else if (data[0].type == "chercheur") {
+        type_utilisateur = TYPE_UTILISATEUR.CHERCHEUR;
+    } else {
+        type_utilisateur = null;
+        console.error("Type d'utilisateur inconnu :", data[0].type);
+    }
+
+    refresh_nom_utilisateur(data[0].nom, data[0].prenom);
+}
+
+async function get_photo_profil() {
+
+    const { data, error } = await supabaseClient
+        .from('utilisateur')
+        .select('url_photo_profil')
+        .eq('id_utilisateur', id_utilisateur)
+        .single();
+    if (data == null || error) {
+        throw new Error("Impossible de récupérer l'url de la photo de profil de l'utilisateur");
+    }
+    let local_photo_url = data.url_photo_profil;
+
+    if(local_photo_url) {
+        
+        const { data: publicData, error: publicError } = supabaseClient.storage
+        .from('photo_profil')
+        .getPublicUrl(local_photo_url);
+        if (publicData == null || publicError) {
+            throw new Error("Impossible de récupérer la photo de profil de l'utilisateur");
+        }
+        let public_photo_url = publicData.publicUrl;
+        refresh_photo_profil(public_photo_url);
+    }
+    else {
+        refresh_photo_profil("");
+    }
+}
+
+/*
+pour input une image :
+
+const { data, error } = await supabase
+.storage
+.from('photo_profil')
+.upload('professional-young-man-stockcake.webp', file); // file = File object depuis input
+*/
+
+async function get_mes_offres() {
+    const { data, error } = await supabaseClient
+    .from('offre_emploi')
+    .select(`
+    *,
+    employeur!inner(
+        id_employeur,
+        entreprise!inner(nom_entreprise)
+    )
+    `)
+    .eq('id_employeur', id_utilisateur);
+
+    if (data == null || error) {
+        throw new Error("Impossible de récupérer les offres de l'utilisateur");
+    }
+
+    refresh_liste_mes_offres(data);
+}
+
+async function add_offre_emploi(nom_offre, refresh=false)
+{
+    const { data, error } = await supabaseClient
+        .from('offre_emploi')
+        .insert([{ nom_offre: nom_offre, id_employeur: id_utilisateur }]);
+
+    if (error) {
+        console.error(error);
+    } else {
+        console.log("Offre ajoutée :", nom_offre, ":", data);
+    }
+    if (refresh) {
+        get_mes_offres(); // afficher directement
+    }
+}
+
+async function delete_offre_emploi(id_offre_emploi) {
+
+    const { error } = await supabaseClient
+    .from('offre_emploi')
+    .delete()
+    .eq('id_offre_emploi', id_offre_emploi);
+
+    console.log("Offre retirée :", id_offre_emploi);
+
+    get_mes_offres();
+}
+
+async function chercheur_aime_offre(id_offre_emploi) {
+
+    const { data, error } = await supabaseClient
+        .from('chercheur_aime_offre')
+        .insert([{ id_offre_emploi: id_offre_emploi, id_chercheur_emploi: id_utilisateur }]);
+
+    if (error) {
+        if (error.code === '23505') {
+            console.log("Le chercheur a déjà aimé cette offre :", id_offre_emploi, " erreur :", error);
+        } else {
+            console.error(error);
+        }
+    } else {
+        console.log("Chercheur aime offre :", id_offre_emploi, ":", data);
+    }
+}
+
+async function offre_aime_chercheur(id_chercheur_emploi, id_offre_emploi) {
+
+    const { data, error } = await supabaseClient
+        .from('offre_aime_chercheur')
+        .insert([{ id_offre_emploi: id_offre_emploi, id_chercheur_emploi: id_chercheur_emploi }]);
+
+    if (error) {
+        if (error.code === '23505') {
+            console.log("L'offre a déjà été aimée par ce chercheur :", id_offre_emploi, " erreur :", error);
+        } else {
+            console.error(error);
+        }
+    } else {
+        console.log("Offre aime chercheur : chercheur ", id_chercheur_emploi, ", offre ", id_offre_emploi, ":", data);
+    }
+}
+
 async function get_match_from_chercheur_emploi() {
     const { data, error } = await supabaseClient
     .from('match')
@@ -382,6 +544,13 @@ async function get_match_from_offre_emploi(id_offre_emploi) {
     return data;
 }
 
+
+
+
+
+
+
+
 // ancien code :
 
 // --- 3. ENVOI DU FORMULAIRE (VERS LE JAVA) ---
@@ -415,6 +584,146 @@ if (btnPublier) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+// --------------------
+// --- 2. UI UPDATE ---
+// --------------------
+
+
+function capitalize(text) {
+  if (!text) return "";
+  return text[0].toUpperCase() + text.slice(1).toLowerCase();
+}
+
+function refresh_nom_utilisateur(nom, prenom) {
+
+    Array.from(document.getElementsByClassName("nom-profil")).forEach(element => {
+        element.textContent = `${capitalize(prenom)} ${capitalize(nom)}`;
+    });
+}
+
+function refresh_photo_profil(public_photo_url) {
+
+    Array.from(document.getElementsByClassName("photo-profil")).forEach(element => {
+        element.src = public_photo_url;
+    });
+}
+
+function refresh_liste_mes_offres(data) {
+    ui_liste_mes_offres.textContent = '';
+    data.forEach(offre_emploi => {
+        add_item_mes_offres(ui_liste_mes_offres, offre_emploi.nom_offre, offre_emploi.id_offre_emploi, true);
+    });
+}
+
+function add_item_mes_offres(liste, nom, id_offre_emploi) {
+
+    const clone_offre = ui_template_offre.cloneNode(true);
+    clone_offre.id = '';
+    clone_offre.childNodes[1].childNodes[1].textContent = `${nom}`;
+    clone_offre.childNodes[1].childNodes[3].textContent = `12 matchs en cours`; //TODO : mettre le nombre de matchs réels
+    clone_offre.setAttribute("id_offre_emploi", id_offre_emploi);
+
+
+    clone_offre.classList.remove('hidden');
+    clone_offre.childNodes[3].childNodes[1].classList.remove('hidden');
+    clone_offre.childNodes[3].childNodes[3].classList.remove('hidden');
+    
+    clone_offre.childNodes[3].childNodes[3].addEventListener('click', async () => {
+        delete_offre_emploi(id_offre_emploi);
+    });
+
+
+    liste.appendChild(clone_offre);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---------------------------
+// --- 2. HANDLERS BOUTONS ---
+// ---------------------------
+
+
+function handle_bouton_ajouter_offre () {
+
+    const nom_offre = document.getElementById('input-titre-offre').value;
+    add_offre_emploi(nom_offre, refresh=true);
+
+    allerA('p-offres')
+}
+
+function proposition_aimee() {
+    //TODO : animation de like ou d'enregistrement en bas sur la nav bar, notif en cas de match ailleur
+    // + charger l'offre suivante
+
+    if (type_utilisateur === TYPE_UTILISATEUR.CHERCHEUR) {
+        chercheur_aime_offre(id_offre_proposee_swipe);
+    } else if (type_utilisateur === TYPE_UTILISATEUR.EMPLOYEUR) {
+        offre_aime_chercheur(id_chercheur_propose_swipe, id_offre_emploi_actuelle);
+    } else {
+        console.error("Type d'utilisateur inconnu :", type_utilisateur);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// --------------------------
+// --- 2. NOTIF ANIMATION ---
+// --------------------------
+
+function afficher_notification(text, duration = notification_default_duration) {
+  const notif = document.getElementById("notification");
+
+  notif.textContent = text;
+
+  // reset classes
+  notif.classList.remove("hide");
+  notif.classList.add("show");
+
+  // disparition après duration ms
+  setTimeout(() => {
+    notif.classList.remove("show");
+    notif.classList.add("hide");
+  }, duration);
+}
 
 
 
@@ -546,9 +855,11 @@ function animateSwipe() {
     }
     frame();
 
-    //TODO : gérer le match ou le refus de l'offre selon la direction du swipe
-    // + charger l'offre suivante
     console.log(swipe_direction === "droite" ? "Swipe droite" : "Swipe gauche");
+    
+    if (swipe_direction === "droite") {
+        proposition_aimee();
+    }
 }
 
 function resetCardAfterSwipe() {

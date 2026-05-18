@@ -17,10 +17,19 @@
 
     <main class="contenu">
 
-        <section id="p-decouvrir" class="page active">
-            <h1 class="titre-logo">JobMatch</h1>
+        <div id="notification" class="notification">
+            Content
+        </div>
 
-            <div class="carte" id="carte_offre">
+        <section id="p-decouvrir" class="page active">
+            <div class="logo-container">
+                <div class="logo-background">
+                    <img class="logo" src="assets/logo.png" alt="Logo JobMatch">
+                </div>
+                <h1 class="titre-logo">JobMatch</h1>
+            </div>
+
+            <div class="carte" id="carte-offre">
                 <div class="carte-image">
                     <i class="fa-solid fa-briefcase"></i>
                 </div>
@@ -33,6 +42,7 @@
                 </div>
             </div>
 
+            <!--
             <div class="actions">
                 <button class="bouton-carte bouton-rouge">
                     <i class="fa-solid fa-xmark"></i>
@@ -41,6 +51,7 @@
                     <i class="fa-solid fa-check"></i>
                 </button>
             </div>
+            -->
         </section>
 
 
@@ -52,10 +63,20 @@
                 </button>
             </div>
 
-            <div class="carte carte-offre" onclick="allerA('p-matchs')">
-                <h3 class="titre-offre">Designer UX/UI</h3>
-                <p class="sous-texte-offre">12 matchs en cours</p>
+            <div class="liste-offres" id="liste-mes-offres">
+                <div class="carte carte-offre hidden" id="template-offre" onclick="allerA('p-matchs')">
+                    <div class="infos-offre">
+                        <h3 class="titre-offre">Designer UX/UI</h3>
+                        <p class="sous-texte-offre">12 matchs en cours</p>
+                    </div>
+                    <div class="actions-offre">
+                        <button class="bouton-edit hidden" onclick="event.stopPropagation()">🖌️</button>
+                        <button class="bouton-supprimer hidden" onclick="event.stopPropagation()">🗑️</button>
+                    </div>
+                </div>
+                
             </div>
+
         </section>
 
 
@@ -65,7 +86,7 @@
             </div>
 
             <div class="carte carte-conversation">
-                <div class="avatar"></div>
+                <img class="avatar" src="" alt="Photo de profil">
                 <div class="infos-conversation">
                     <h4 class="nom-entreprise">TechVision Corp.</h4>
                     <p class="dernier-message">C'est un match ! Discutons...</p>
@@ -76,7 +97,7 @@
 
         <section id="p-profil" class="page">
             <div class="entete-profil">
-                <div class="avatar-grand"></div>
+                <img class="avatar-grand photo-profil" src="" alt="Photo de profil">
                 <h2 class="nom-profil">Jean Dupont</h2>
             </div>
 
@@ -96,10 +117,10 @@
             </button>
 
             <h1 class="titre-page">Nouvelle Offre</h1>
-            <input type="text" placeholder="Titre du poste" class="champ-formulaire">
+            <input id="input-titre-offre" type="text" placeholder="Titre du poste" class="champ-formulaire">
             <textarea placeholder="Missions..." rows="4" class="champ-formulaire"></textarea>
 
-            <button onclick="allerA('p-offres')" class="bouton bouton-principal">
+            <button class="bouton bouton-principal" id="bouton-ajouter-offre">
                 Publier
             </button>
         </section>
