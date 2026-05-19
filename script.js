@@ -19,7 +19,7 @@
 
 
 // - Données utilisateur -
-let id_utilisateur = 1;
+let id_utilisateur = 7;
 
 const TYPE_UTILISATEUR = {
   EMPLOYEUR: "employeur",
@@ -32,7 +32,18 @@ let type_utilisateur = null;
 // - User interface -
 let id_offre_proposee_swipe = null;
 let id_chercheur_propose_swipe = null;
-let id_offre_emploi_actuelle = null;
+
+let nouvelle_proposition = null;
+
+let id_offre_emploi_actuelle = null; //offre sélectionnée pour l'employeur pour trouver des chercheurs d'emploi correspondants
+
+let liste_id_offre_refusee = [];
+let liste_id_chercheur_refusee = [];
+
+let promise_traiter_derniere_proposition;
+let promise_get_nouvelle_proposition;
+
+let plus_de_proposition = false;
 
 //Données
 //let ui_prenom_utilisateur;
@@ -59,6 +70,7 @@ let menu_list = [];
 let supabaseClient;
 let match_list = [];
 let refresh_delay = 2000; //2 seconds
+let refresh_delay_slow = 7000; //2 seconds
 
 
 
@@ -152,6 +164,11 @@ function ui_assignation() {
 
 function ui_event_listeners() {
     ui_bouton_ajouter_offre.addEventListener('click', async () => handle_bouton_ajouter_offre());
+
+    document.getElementById("choix-utilisateur-select").addEventListener("change", function () {
+        changer_utilisateur(this.value);
+    });
+
     //ui_bouton_changer_id_utilisateur.addEventListener('click', async () => {
     //    id_utilisateur = parseInt(document.getElementById('input_id_utilisateur').value);
     //    get_all_database();
@@ -193,13 +210,17 @@ function ui_swipe_initialisation() {
     });
 }
 
-async function start() {
+async function start(changer_utilisateur = false) {
     //display_menu(default_menu_id);
-    allerA('p-decouvrir');
+    if (!changer_utilisateur) {
+        allerA('p-decouvrir');
+    }
 
     get_all_database();
     manage_match_notifications(init=true);
     start_refresh_timer();
+
+    await get_nom_utilisateur();
 
     if (type_utilisateur === TYPE_UTILISATEUR.CHERCHEUR) {
         //match_list = await get_match_from_chercheur_emploi();
@@ -208,11 +229,16 @@ async function start() {
         //match_list = await get_match_from_offre_emploi();
     }
 
-    id_offre_proposee_swipe = 3; //TODO : récupérer une offre dans la database
-    id_chercheur_propose_swipe = 1; //TODO : récupérer un chercheur dans la database
-    id_offre_emploi_actuelle = 3; //TODO : sauvegarder l'offre actuelle de l'employeur
+    id_offre_emploi_actuelle = 20; //TODO : sauvegarder l'offre actuelle de l'employeur
+    
+    await charger_nouvelle_proposition();
+    switcher_id_ancienne_nouvelle_proposition();
 }
 
+function changer_utilisateur(valeur) {
+    id_utilisateur = valeur;
+    start(true);
+}
 
 
 
@@ -241,6 +267,7 @@ function get_all_database() {
 
 function start_refresh_timer() {
     refresh_timer();
+    refresh_timer_slow();
 }
 
 function refresh_timer() {
@@ -250,11 +277,26 @@ function refresh_timer() {
     }, refresh_delay);
 }
 
+function refresh_timer_slow() {
+    setTimeout(() => {
+        refresh_slow();
+        refresh_timer_slow();
+    }, refresh_delay_slow);
+}
+
 async function refresh() {
     //get_offre_emploi();
-    console.log("Rafraîchissement des données :");
+    console.log("Rafraîchissement des matchs :");
 
     await manage_match_notifications();
+}
+
+async function refresh_slow() {
+    // si on a plus trouvé de proposition, rechercher une nouvelle proposition
+    if (plus_de_proposition) {
+        await charger_nouvelle_proposition();
+        switcher_id_ancienne_nouvelle_proposition();
+    }
 }
 
 async function manage_match_notifications(init=false) {
@@ -544,12 +586,90 @@ async function get_match_from_offre_emploi(id_offre_emploi) {
     return data;
 }
 
+async function get_offre_emploi_pas_refusee () {
 
+    const formatted = `(${liste_id_offre_refusee.map(id => `"${id}"`).join(',')})`;
 
+    const { data, error } = await supabaseClient
+    .from('offre_emploi')
+    .select(`
+        *,
+        employeur (
+            *,
+            entreprise (
+                *
+            )
+        )
+    `)
+    .not('id_offre_emploi', 'in', formatted)
+    .limit(1);
 
+    const { data: likes } = await supabaseClient
+        .from('chercheur_aime_offre')
+        .select('id_offre_emploi')
+        .eq('id_utilisateur', id_utilisateur);
+    let safe_likes = likes ?? []; //si null alors on met vide
+    const likedIds = new Set(safe_likes.map(l => l.id_offre_emploi));
+    
+    const offre_non_refusee_et_non_aimee = data.filter(o => !likedIds.has(o.id_offre_emploi));
 
+    if (offre_non_refusee_et_non_aimee == null || error) {
+        throw new Error("Impossible de récupérer les offres générales");
+    }
 
+    if (offre_non_refusee_et_non_aimee[0] == null) {
+        plus_de_proposition = true;
+    }
+    else {
+        plus_de_proposition = false;
+    }
 
+    return offre_non_refusee_et_non_aimee[0];
+}
+
+async function get_chercheur_emploi_pas_refusee () {
+
+    const formatted = `(${liste_id_chercheur_refusee.map(id => `"${id}"`).join(',')})`;
+
+    const { data, error } = await supabaseClient
+    .from('chercheur_emploi')
+    .select(`
+    *,
+        utilisateur (*)
+    `)
+    .not('id_chercheur_emploi', 'in', formatted)
+
+    if (id_offre_emploi_actuelle != null) {
+
+        const { data: likes } = await supabaseClient
+            .from('offre_aime_chercheur')
+            .select('*')
+            .eq('id_offre_emploi', id_offre_emploi_actuelle);
+
+        console.log(likes);
+
+        let safe_likes = likes ?? []; //si null alors on met vide
+        const likedIds = new Set(safe_likes.map(l => l.id_chercheur_emploi));
+    
+        const chercheur_non_refuse_et_non_aime = data.filter(o => !likedIds.has(o.id_chercheur_emploi));
+
+        if (chercheur_non_refuse_et_non_aime == null || error) {
+            throw new Error("Impossible de récupérer les chercheurs généraux");
+        }
+        if (chercheur_non_refuse_et_non_aime[0] == null) {
+            plus_de_proposition = true;
+        }
+        else {
+            plus_de_proposition = false;
+        }
+
+        return chercheur_non_refuse_et_non_aime[0];
+    }
+    else {
+        return data[0];
+    }
+
+}
 
 // ancien code :
 
@@ -578,6 +698,8 @@ const btnPublier = document.querySelector('#p-formulaire bouton-bleu');
 if (btnPublier) {
     btnPublier.onclick = publierOffre;
 }
+
+
 
 
 
@@ -647,6 +769,32 @@ function add_item_mes_offres(liste, nom, id_offre_emploi) {
     liste.appendChild(clone_offre);
 };
 
+function refresh_carte_proposition(nouvelle_proposition) {
+
+    console.log("Nouvelle offre proposée :", nouvelle_proposition);
+
+    if (nouvelle_proposition == null) {
+        document.getElementById("carte-offre").classList.add("hidden");
+        document.getElementById("plus-de-proposition").classList.remove("hidden");
+
+        return;
+    }
+
+    document.getElementById("carte-offre").classList.remove("hidden");
+    document.getElementById("plus-de-proposition").classList.add("hidden");
+
+    if (type_utilisateur === TYPE_UTILISATEUR.CHERCHEUR) {
+        document.getElementById("titre-carte").textContent = nouvelle_proposition.nom_offre;
+        let entreprise = nouvelle_proposition.employeur.entreprise;
+        document.getElementById("entreprise-carte").textContent = entreprise == null ? "" : entreprise.nom_entreprise;
+        
+    } else if (type_utilisateur === TYPE_UTILISATEUR.EMPLOYEUR) {
+        document.getElementById("titre-carte").textContent = nouvelle_proposition.utilisateur.prenom;
+        //document.getElementById("titre-carte").textContent = nouvelle_proposition.legende;
+    }
+}
+
+
 
 
 
@@ -677,18 +825,65 @@ function handle_bouton_ajouter_offre () {
     allerA('p-offres')
 }
 
-function proposition_aimee() {
+async function traiter_proposition(aime) {
+    if (aime) {
+        await proposition_aimee();
+    }
+    else {
+        proposition_refusee();
+    }
+}
+
+async function proposition_aimee() {
     //TODO : animation de like ou d'enregistrement en bas sur la nav bar, notif en cas de match ailleur
     // + charger l'offre suivante
 
     if (type_utilisateur === TYPE_UTILISATEUR.CHERCHEUR) {
-        chercheur_aime_offre(id_offre_proposee_swipe);
+        await chercheur_aime_offre(id_offre_proposee_swipe);
     } else if (type_utilisateur === TYPE_UTILISATEUR.EMPLOYEUR) {
-        offre_aime_chercheur(id_chercheur_propose_swipe, id_offre_emploi_actuelle);
+        await offre_aime_chercheur(id_chercheur_propose_swipe, id_offre_emploi_actuelle);
     } else {
         console.error("Type d'utilisateur inconnu :", type_utilisateur);
     }
 }
+
+function proposition_refusee() {
+    if (type_utilisateur === TYPE_UTILISATEUR.CHERCHEUR) {
+        liste_id_offre_refusee.push(id_offre_proposee_swipe);
+    } else if (type_utilisateur === TYPE_UTILISATEUR.EMPLOYEUR) {
+        console.log("refus");
+        liste_id_chercheur_refusee.push(id_chercheur_propose_swipe);
+    } else {
+        console.error("Type d'utilisateur inconnu :", type_utilisateur);
+    }
+}
+
+async function charger_nouvelle_proposition() {
+
+    if (type_utilisateur === TYPE_UTILISATEUR.CHERCHEUR) {
+        nouvelle_proposition = await get_offre_emploi_pas_refusee();
+    } else if (type_utilisateur === TYPE_UTILISATEUR.EMPLOYEUR) {
+        nouvelle_proposition = await get_chercheur_emploi_pas_refusee();
+    }
+
+    refresh_carte_proposition(nouvelle_proposition);  
+}
+
+function switcher_id_ancienne_nouvelle_proposition() {
+
+    if (plus_de_proposition) {return;}
+
+    if (type_utilisateur === TYPE_UTILISATEUR.CHERCHEUR) {
+        id_offre_proposee_swipe = nouvelle_proposition.id_offre_emploi;
+    } else if (type_utilisateur === TYPE_UTILISATEUR.EMPLOYEUR) {
+        id_chercheur_propose_swipe = nouvelle_proposition.id_chercheur_emploi;
+    }
+}
+
+
+
+
+
 
 
 
@@ -724,6 +919,18 @@ function afficher_notification(text, duration = notification_default_duration) {
     notif.classList.add("hide");
   }, duration);
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -857,9 +1064,12 @@ function animateSwipe() {
 
     console.log(swipe_direction === "droite" ? "Swipe droite" : "Swipe gauche");
     
-    if (swipe_direction === "droite") {
-        proposition_aimee();
-    }
+    Promise.all([
+        traiter_proposition(swipe_direction === "droite"),
+        charger_nouvelle_proposition()
+    ]).then(() => {
+        switcher_id_ancienne_nouvelle_proposition();
+    });
 }
 
 function resetCardAfterSwipe() {

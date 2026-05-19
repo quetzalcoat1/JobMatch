@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobMatch</title>
     
+    <link rel="icon" type="image/x-icon" href="assets/logo_tab.ico">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 
@@ -21,6 +23,20 @@
             Content
         </div>
 
+        <div id="choix-utilisateur">
+            <select id="choix-utilisateur-select">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+            </select>
+        </div>
+
         <section id="p-decouvrir" class="page active">
             <div class="logo-container">
                 <div class="logo-background">
@@ -29,18 +45,20 @@
                 <h1 class="titre-logo">JobMatch</h1>
             </div>
 
-            <div class="carte" id="carte-offre">
+            <div class="carte hidden" id="carte-offre">
                 <div class="carte-image">
                     <i class="fa-solid fa-briefcase"></i>
                 </div>
 
                 <div class="carte-infos">
-                    <h2 class="titre-carte">Développeur Front-End</h2>
-                    <p class="entreprise">TechVision Corp.</p>
+                    <h2 id="titre-carte" class="titre-carte">Développeur Front-End</h2>
+                    <p id="entreprise-carte" class="entreprise">TechVision Corp.</p>
                     <p class="info"><strong>Lieu :</strong> Paris</p>
                     <p class="info"><strong>Salaire :</strong> 45k€</p>
                 </div>
             </div>
+
+            <div id="plus-de-proposition" class="hidden">Plus de proposition disponibles ;-;</div>
 
             <!--
             <div class="actions">
