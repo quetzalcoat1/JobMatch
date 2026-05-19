@@ -136,6 +136,14 @@ button {
     touch-action: none;
     will-change: transform;
     width: max-content;
+    max-width: min(90%, 400px);
+    min-width: min(70%, 400px);
+}
+
+#plus-de-proposition {
+    position: absolute;
+    user-select: none;
+    top: 50%;
 }
 
 #p-decouvrir.active {
@@ -173,6 +181,41 @@ button {
 .notification.hide {
     transform: translate(-50%, -150%);
     opacity: 0;
+}
+
+#choix-utilisateur {
+    position: fixed;
+    bottom: 80px;
+    right: 5px;
+
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 9999;
+}
+
+#choix-utilisateur-select {
+    padding: 6px 8px;
+    font-size: 14px;
+}
+
+#choix-utilisateur-select option {
+    padding: 4px 6px;
+    font-size: 14px;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.choix-utilisateur button {
+    padding: 4px 6px;
+    font-size: 14px;
 }
 
 /* ACTIONS */
