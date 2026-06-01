@@ -23,17 +23,19 @@
             Content
         </div>
 
+        <button id="reset-database-button" onclick="reset_database()">Reset Database</button>
+
         <div id="choix-utilisateur">
             <select id="choix-utilisateur-select">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
+                <option value="1">Anne Leroux</option>
+                <option value="2">Louis Mauret</option>
+                <option value="3">Sarah Faure</option>
+                <option value="4">Jacques Boulon</option>
+                <option value="5">Florent Chazel</option>
+                <option value="6">Bernard Paulet</option>
+                <option value="7">Laure Deschamp</option>
+                <option value="8">Luc Besson</option>
+                <!-- <option value="9">9</option> -->
             </select>
         </div>
 
@@ -45,16 +47,34 @@
                 <h1 class="titre-logo">JobMatch</h1>
             </div>
 
+            <div id="choix-offre-actuelle-employeur">
+                <select id="choix-offre-actuelle-select">
+                    <option value="1">Mon offre 1</option>
+                    <option value="2">Mon offre 2</option>
+                    <!-- <option value="9">9</option> -->
+                </select>
+            </div>
+
             <div class="carte hidden" id="carte-offre">
                 <div class="carte-image">
-                    <i class="fa-solid fa-briefcase"></i>
+                    <i id="carte-icone-offre" class="fa-solid fa-briefcase"></i>
+                    <i id="carte-icone-personne" class="fa-solid fa-circle-user"></i>
+                    <!--<i class="fa-solid fa-user"></i>-->
                 </div>
 
                 <div class="carte-infos">
                     <h2 id="titre-carte" class="titre-carte">Développeur Front-End</h2>
                     <p id="entreprise-carte" class="entreprise">TechVision Corp.</p>
-                    <p class="info"><strong>Lieu :</strong> Paris</p>
-                    <p class="info"><strong>Salaire :</strong> 45k€</p>
+                    <p id="description-carte" style="font-size: 15px;"></p>
+                    <div id="container-infos-bas-carte">
+                        <div id="container-lieu-carte">
+                            <i id="icone-lieu-carte" class="fa-solid fa-location-dot"></i>
+                            <p id="lieu-carte" class="info"></p>
+                        </div>
+                        <div id="container-salaire">
+                            <p id="salaire-carte" class="info"></p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -76,7 +96,7 @@
         <section id="p-offres" class="page">
             <div class="entete-page">
                 <h1 class="titre-page">Mes Offres</h1>
-                <button onclick="allerA('p-formulaire')" class="bouton bouton-creation">
+                <button onclick="allerA('p-formulaire')" class="bouton bouton-creation unset-button" id="bouton-creation-offre">
                     + Créer
                 </button>
             </div>
@@ -88,8 +108,8 @@
                         <p class="sous-texte-offre">12 matchs en cours</p>
                     </div>
                     <div class="actions-offre">
-                        <button class="bouton-edit hidden" onclick="event.stopPropagation()">🖌️</button>
-                        <button class="bouton-supprimer hidden" onclick="event.stopPropagation()">🗑️</button>
+                        <button class="unset-button bouton-edit hidden" onclick="event.stopPropagation()">🖌️</button>
+                        <button class="unset-button bouton-supprimer hidden" onclick="event.stopPropagation()">🗑️</button>
                     </div>
                 </div>
                 
@@ -119,18 +139,47 @@
                 <h2 class="nom-profil">Jean Dupont</h2>
             </div>
 
-            <div class="carte carte-profil">
+            <div id="container-profil-critere" class="carte carte-profil">
                 <p class="titre-section">Mes critères</p>
-                <label class="ligne-checkbox">
-                    <input type="checkbox" checked>
-                    CDI uniquement
-                </label>
+                <div id="container-profil-checkbox">
+                    <label class="ligne-checkbox">
+                        <input type="checkbox">
+                        CDI
+                    </label>
+                    <label class="ligne-checkbox">
+                        <input type="checkbox" checked>
+                        CDD
+                    </label>
+                    <label class="ligne-checkbox">
+                        <input type="checkbox">
+                        Stage
+                    </label>
+                    <label class="ligne-checkbox">
+                        <input type="checkbox">
+                        Intérim
+                    </label>
+                </div>
+            </div>
+
+            <div id="container-profil-description" class="carte carte-profil" style="height: fit-content;">
+                <p class="titre-section">Ma phrase d'accroche</p>
+                <textarea name="" id="profil-description-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px;"></textarea>
+            </div>
+
+            <div id="container-profil-etude" class="carte carte-profil">
+                <p class="titre-section">Mon niveau d'étude</p>
+                <textarea name="" id="profil-etude-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px;"></textarea>
+            </div>
+
+            <div id="container-profil-entreprise" class="carte carte-profil">
+                <p class="titre-section">Mon entreprise</p>
+                <textarea name="" id="profil-entreprise-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px;"></textarea>
             </div>
         </section>
 
 
         <section id="p-formulaire" class="page">
-            <button onclick="allerA('p-offres')" class="bouton-retour">
+            <button onclick="allerA('p-offres')" class="bouton-retour unset-button">
                 <i class="fa-solid fa-arrow-left"></i> Retour
             </button>
 
@@ -138,7 +187,7 @@
             <input id="input-titre-offre" type="text" placeholder="Titre du poste" class="champ-formulaire">
             <textarea placeholder="Missions..." rows="4" class="champ-formulaire"></textarea>
 
-            <button class="bouton bouton-principal" id="bouton-ajouter-offre">
+            <button class="bouton bouton-principal unset-button" id="bouton-ajouter-offre">
                 Publier
             </button>
         </section>
@@ -147,22 +196,22 @@
 
 
     <nav class="barre-nav">
-        <button onclick="allerA('p-decouvrir')" class="onglet actif" id="n-decouvrir">
+        <button onclick="allerA('p-decouvrir')" class="unset-button onglet actif" id="n-decouvrir">
             <i class="fa-solid fa-clone nav-icon"></i>
             <span>Découvrir</span>
         </button>
 
-        <button onclick="allerA('p-offres')" class="onglet" id="n-offres">
+        <button onclick="allerA('p-offres')" class="unset-button onglet" id="n-offres">
             <i class="fa-solid fa-briefcase nav-icon"></i>
             <span>Offres</span>
         </button>
 
-        <button onclick="allerA('p-matchs')" class="onglet" id="n-matchs">
+        <button onclick="allerA('p-matchs')" class="unset-button onglet" id="n-matchs">
             <i class="fa-solid fa-comments nav-icon"></i>
             <span>Matchs</span>
         </button>
 
-        <button onclick="allerA('p-profil')" class="onglet" id="n-profil">
+        <button onclick="allerA('p-profil')" class="unset-button onglet" id="n-profil">
             <i class="fa-solid fa-user nav-icon"></i>
             <span>Profil</span>
         </button>
