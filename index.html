@@ -102,7 +102,7 @@
             </div>
 
             <div class="liste-offres" id="liste-mes-offres">
-                <div class="carte carte-offre hidden" id="template-offre" onclick="allerA('p-matchs')">
+                <div class="carte carte-offre hidden" id="template-offre">
                     <div class="infos-offre">
                         <h3 class="titre-offre">Designer UX/UI</h3>
                         <p class="sous-texte-offre">12 matchs en cours</p>
@@ -122,14 +122,16 @@
             <div class="entete-page">
                 <h1 class="titre-page">Conversations</h1>
             </div>
-
-            <div class="carte carte-conversation">
-                <img class="avatar" src="" alt="Photo de profil">
-                <div class="infos-conversation">
-                    <h4 class="nom-entreprise">TechVision Corp.</h4>
-                    <p class="dernier-message">C'est un match ! Discutons...</p>
+            <div id="liste-match">
+                <div class="carte carte-conversation hidden" id="template-match">
+                    <img class="avatar" src="" alt="Photo de profil">
+                    <div class="infos-conversation">
+                        <h4 class="nom-entreprise">TechVision Corp.</h4>
+                        <p class="dernier-message">C'est un match ! Discutons...</p>
+                    </div>
                 </div>
             </div>
+
         </section>
 
 
@@ -163,17 +165,17 @@
 
             <div id="container-profil-description" class="carte carte-profil" style="height: fit-content;">
                 <p class="titre-section">Ma phrase d'accroche</p>
-                <textarea name="" id="profil-description-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px;"></textarea>
+                <textarea name="" id="profil-description-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px; border: solid 1px rgb(194, 194, 194);"></textarea>
             </div>
 
             <div id="container-profil-etude" class="carte carte-profil">
                 <p class="titre-section">Mon niveau d'étude</p>
-                <textarea name="" id="profil-etude-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px;"></textarea>
+                <textarea name="" id="profil-etude-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px; border: solid 1px rgb(194, 194, 194);"></textarea>
             </div>
 
             <div id="container-profil-entreprise" class="carte carte-profil">
                 <p class="titre-section">Mon entreprise</p>
-                <textarea name="" id="profil-entreprise-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px;"></textarea>
+                <textarea name="" id="profil-entreprise-text-area" style="width: 100%; height: fit-content; font-family: sans-serif; font-size: 15px; border: solid 1px rgb(194, 194, 194);"></textarea>
             </div>
         </section>
 
